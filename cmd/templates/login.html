@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <span>Login</span>
+        <div>
+            <a href="/register">Register</a>
+            <a href="/home">Home</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Login</h1>
+        <form action="/login" method="post">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>New user? <a href="/register">Register here</a>.</p>
+    </main>
+</body>
+</html>

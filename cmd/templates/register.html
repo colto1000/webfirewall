@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <span>Registration</span>
+        <div>
+            <a href="/login">Login</a>
+            <a href="/home">Home</a>
+        </div>
+    </nav>
+    <main>
+        <h1>Register</h1>
+        <form action="/register" method="post">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <button type="submit">Register</button>
+        </form>
+    </main>
+</body>
+</html>
