@@ -13,3 +13,9 @@ Or if using the precompiled binary _(experimental)_, then: **`chmod +x webfirewa
 _This project relies on Legacy IPTables modules, so you must first run `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy` if you are not already running a Legacy version of IPTables._
 
 _This project has been tested with Go v1.21.5 in Ubuntu 22.04_
+
+## Credit:
+
+HTML Template referenced from Stellar by [HTML5 UP](html5up.net).
+
+Logo Created by [OpenAI's](https://openai.com/) ChatGPT and DALL·E.
