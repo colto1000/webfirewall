@@ -1,4 +1,9 @@
+<p align="center">
+  <img src="https://github.com/colto1000/webfirewall/assets/33501061/75eae7b5-5db9-4ac3-afa9-01ac9fb88fce" width="250" height="250">
+</p>
+
 # webfirewall
+
 _WORK IN PROGRESS_
 
 A IPTables-based firewall with a web application admin frontend, written mostly in Go and HTML.
