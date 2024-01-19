@@ -9,15 +9,19 @@ _WORK IN PROGRESS_
 A IPTables-based firewall with a web application admin frontend, written mostly in Go and HTML.
 
 ## Usage
-From the parent directory, run the command: **`go run cmd/main.go`**
+From the root directory of this project, run the command: `go build -o firewall src/firewall/main.go`
+
+...Then, run with: `sudo ./firewall`
 
 Or if using the precompiled binary _(experimental)_, then: **`chmod +x webfirewall_linux_amd64`** and **`./webfirewall_linux_amd64`**
 
 ## _**Notes**_
 
-_This project relies on Legacy IPTables modules, so you must first run `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy` if you are not already running a Legacy version of IPTables._
-
-_This project has been tested with Go v1.21.5 in Ubuntu 22.04_
+- This project relies on Legacy IPTables modules, so you must first run `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy` if you are not already running a Legacy version of IPTables.
+- You may have to create an SQL database to fit line 41: `dsn := "webadmin:password12@tcp(localhost:3306)/webfirewall"`
+  - **Table Name:** "webfirewall" on SQL server on local machine's **Port 3306**, **Username:** "webadmin", **Password:** "password12".
+  - _This will be fixed with implementation of Go's [Embed](https://pkg.go.dev/embed) library._
+- This project has been tested with Go v1.21.5 in Ubuntu 22.04.
 
 ## Credit:
 
