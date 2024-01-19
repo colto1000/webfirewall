@@ -35,132 +35,147 @@
                 <!-- Lists -->
 						<section id="clusters" class="main">
 							<h2><b>IPTables</b></h2>
-							<div class="row">
-								<div class="col-6 col-12-medium"> <!-- experiment with adding dashboard class here -->
-									<div id="rules">
-                                        <h3>List Rules:</h3>
-                                        <ul class="alt">
-                                            <li>Dolor pulvinar magna etiam.</li>
-                                            <li>Sagittis sed lorem adipiscing.</li>
-                                            <li>Felis enim etiam feugiat.</li>
-                                            <button class="button" id="listRules">Update List</button>
-                                            <script>
-                                                document.getElementById('listRules').addEventListener('click', function() {
-                                                    fetch('/list-rules')
-                                                    .then(response => response.json())
-                                                    .then(data => {
-                                                        const rulesDiv = document.getElementById('rules');
-                                                        rulesDiv.innerHTML = '<pre>' + JSON
-                                                            
-                                                            .stringify(data, null, 2) + '</pre>';
-                                                        })
-                                                        .catch(error => console.error('Error:', error));
-                                                    });
-                                            </script>
-                                        </ul>
-                                    </div>
-                                    <div id ="blockIPdiv">
-                                        <h3>Block by IP:</h3>
+                            <h3><b>List Rules:</b></h3>
+                            <button class="button" id="listRules">Refresh List</button>
+                            <div id="rules">
+                                <ul class="alt">
+                                    <li>This is filler.</li>
+                                    <li>And more filler.</li>
+                                    <li>And even more filer.</li>
+                                    <li>Maybe someday this will be a nice list of rules.</li>
+                                    <script>
+                                        document.getElementById('listRules').addEventListener('click', function() {
+                                            fetch('/list-rules')
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                const rulesDiv = document.getElementById('rules');
+                                                rulesDiv.innerHTML = '<pre>' + JSON
+                                                    
+                                                    .stringify(data, null, 2) + '</pre>';
+                                                })
+                                                .catch(error => console.error('Error:', error));
+                                            });
+                                    </script>
+                                </ul>
+                            </div>
+                            
+                            <div id ="blockIPdiv">
+                                <h3><b>Block by IP:</b></h3>
 
-                                        <form id="blockIP">
+                                <form id="blockIP">
+                                    <div class="row gtr-uniform">
+                                        <div class="col-12">
                                             <label for="ip">IP Address:</label>
                                             <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
-                                            <br>
+                                        </div>
 
+                                        <div class="col-6 col-12-xsmall">
                                             <label for="protocol">Protocol:</label>
                                             <select name="protocol" id="protocol">
                                                 <option value="tcp">TCP</option>
                                                 <option value="udp">UDP</option>
                                                 <option value="icmp">ICMP</option>
-                                                <!-- Add more protocols as needed -->
                                             </select>
-                                            <br>
+                                        </div>
 
+                                        <div class="col-6 col-12-xsmall">
                                             <label for="srcdst">Source/Destination:</label>
                                             <select name="srcdst" id="srcdst">
                                                 <option value="source">Source</option>
                                                 <option value="destination">Destination</option>
                                             </select>
-                                            <br>
-                                    
-                                            <button class="button" type="submit">Submit</button>
-                                        </form>
-                                    
-                                        <script>
-                                            document.getElementById('blockIP').addEventListener('submit', function(event) {
-                                                event.preventDefault();
-                                                
-                                                const formData = new FormData(this);
-                                                
-                                                fetch('/block-ip', {
-                                                    method: 'POST',
-                                                    body: formData
-                                                })
-                                                .then(response => response.text())
-                                                .then(data => {
-                                                    alert('Rule added: ' + data);
-                                                })
-                                                .catch(error => console.error('Error:', error));
-                                            });
-                                        </script>
-                                    </div>
-								</div>
-								<div class="col-6 col-12-medium">
-									<div id ="blockPortdiv">
-                                        <h3>Block by Port:</h3>
+                                        </div>
 
-                                        <form id="blockPort">
+                                        <div class="col-12">
+                                            <ul class="actions">
+                                                <li><button type="submit" class="primary">Submit</button></li>
+                                                <li><button class="button" type="reset">Reset</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <script>
+                                    document.getElementById('blockIP').addEventListener('submit', function(event) {
+                                        event.preventDefault();
+                                        
+                                        const formData = new FormData(this);
+                                        
+                                        fetch('/block-ip', {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            alert(data);
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                    });
+                                </script>
+
+                            </div>
+                            <div id ="blockPortdiv">
+                                <h3><b>Block by Port:</b></h3>
+
+                                <form id="blockPort">
+                                    <div class="row gtr-uniform">
+                                        <div class="col-12">
                                             <label for="port">Port:</label>
                                             <input type="text" id="port" name="port" placeholder="e.g., 80">
-                                            <br>
-                                    
+                                        </div>
+
+                                        <div class="col-6 col-12-xsmall">
                                             <label for="protocol">Protocol:</label>
                                             <select name="protocol" id="protocol">
                                                 <option value="tcp">TCP</option>
                                                 <option value="udp">UDP</option>
                                                 <option value="icmp">ICMP</option>
-                                                <!-- Add more protocols as needed -->
                                             </select>
-                                            <br>
+                                        </div>
 
+                                        <div class="col-6 col-12-xsmall">
                                             <label for="srcdst">Source/Destination:</label>
                                             <select name="srcdst" id="srcdst">
                                                 <option value="source">Source</option>
                                                 <option value="destination">Destination</option>
                                             </select>
-                                            <br>
-                                    
-                                            <button class="button" type="submit">Submit</button>
-                                        </form>
-                                    
-                                        <script>
-                                            document.getElementById('blockPort').addEventListener('submit', function(event) {
-                                                event.preventDefault();
-                                                
-                                                const formData = new FormData(this);
-                                                
-                                                fetch('/block-port', {
-                                                    method: 'POST',
-                                                    body: formData
-                                                })
-                                                .then(response => response.text())
-                                                .then(data => {
-                                                    alert('Rule added: ' + data);
-                                                })
-                                                .catch(error => console.error('Error:', error));
-                                            });
-                                        </script>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <ul class="actions">
+                                                <li><button type="submit" class="primary">Submit</button></li>
+                                                <li><button class="button" type="reset">Reset</button></li>
+                                            </ul>
+                                        </div>
                                     </div>
-									<h3>Icons</h3>
-									<ul class="icons">
-										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-										<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-									</ul>
-								</div>
-							</div>
+                                </form>
+                            
+                                <script>
+                                    document.getElementById('blockPort').addEventListener('submit', function(event) {
+                                        event.preventDefault();
+                                        
+                                        const formData = new FormData(this);
+                                        
+                                        fetch('/block-port', {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            alert(data);
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                    });
+                                </script>
+                            </div>
+                            <h3><i>More forms coming soon...</i></h3>
+                            <ul class="icons">
+                                <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                                <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+                            </ul>
 						</section>
                     
                 </div>

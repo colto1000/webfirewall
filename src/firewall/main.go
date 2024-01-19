@@ -69,7 +69,7 @@ func main() {
 	ipt, err := iptables.New()
 
 	// Handle template (webpage) files
-	templatesPath := filepath.Join("cmd", "templates", "*.html")
+	templatesPath := filepath.Join("src", "templates", "*.html")
 	log.Println("templatesPath: ", templatesPath)
 	renderer := &TemplateRenderer{
 		templates: template.Must(template.ParseGlob(templatesPath)),
@@ -77,9 +77,9 @@ func main() {
 	e.Renderer = renderer
 
 	// Serve static files -- try to implement filepath.Join better here
-	e.Static("/static", filepath.Join("cmd", "static"))
-	e.Static("/images", filepath.Join("cmd", "images"))
-	// e.Static("/static", "cmd/static")
+	e.Static("/static", filepath.Join("src", "static"))
+	e.Static("/images", filepath.Join("src", "images"))
+	// e.Static("/static", "src/static")
 
 	// Middleware
 	e.Use(middleware.Logger())
