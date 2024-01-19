@@ -9,8 +9,10 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 
-	// "os"
+	// "reflect"
+
 	"path/filepath"
 
 	"github.com/coreos/go-iptables/iptables"
@@ -21,24 +23,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"golang.org/x/crypto/bcrypt"
 )
-
-var (
-	// Key for session encryption. This should be a random, long, and secure key.
-	sessionKey = generateSecureKey(32)
-	store      = sessions.NewCookieStore([]byte(sessionKey))
-)
-
-type User struct {
-	Username string `json:"username" validate:"required,alphanum"`
-	Password string `json:"password" validate:"required"`
-}
-
-// Define a template renderer
-// func renderer(templates string) echo.Renderer {
-// 	return &TemplateRenderer{
-// 		templates: template.Must(template.ParseGlob(templates)),
-// 	}
-// }
 
 type TemplateRenderer struct {
 	templates *template.Template
@@ -68,12 +52,25 @@ func init() {
 
 func main() {
 
-	// Create a new Echo instance
+	// Open a log file
+	logFile, err := os.OpenFile("output.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer logFile.Close()
+
+	// Redirect output to the file
+	log.SetOutput(logFile)
+	os.Stdout = logFile
+	os.Stderr = logFile
+
+	// Create a new Echo and IPTables instance
 	e := echo.New()
+	ipt, err := iptables.New()
 
 	// Handle template (webpage) files
 	templatesPath := filepath.Join("cmd", "templates", "*.html")
-	fmt.Println("templatesPath: ", templatesPath)
+	log.Println("templatesPath: ", templatesPath)
 	renderer := &TemplateRenderer{
 		templates: template.Must(template.ParseGlob(templatesPath)),
 	}
@@ -81,6 +78,7 @@ func main() {
 
 	// Serve static files -- try to implement filepath.Join better here
 	e.Static("/static", filepath.Join("cmd", "static"))
+	e.Static("/images", filepath.Join("cmd", "images"))
 	// e.Static("/static", "cmd/static")
 
 	// Middleware
@@ -91,38 +89,254 @@ func main() {
 	e.GET("/", homePage)
 	e.GET("/login", loginPage)
 	e.POST("/login", login)
+	e.GET("/logout", logout)
 	e.GET("/dashboard", dashboardPage, isAuthenticated)
 	e.GET("/register", registerPage)
 	e.POST("/register", handleRegistration)
 
+	e.POST("/block-ip", blockIPHandler(ipt))
+	e.POST("/block-port", blockPortHandler(ipt))
+	e.POST("/request-limit", addRequestLimitHandler(ipt))
+	e.POST("/rate-limit", addRateLimitHandler(ipt))
+	e.GET("/list-rules", listRules(ipt))
+
+	e.GET("/index", indexPage)
+	e.GET("/generic", genericPage)
+	e.GET("/elements", elementsPage)
+
 	// Start server
 	e.Logger.Fatal(e.Start(":8082"))
 
-	// Create a new IPTables instance
-	ipt, err := iptables.New()
-	if err != nil {
-		log.Fatalf("Error creating iptables instance: %v", err)
-	}
+	// // Create a new IPTables instance
+	// ipt, err := iptables.New()
+	// if err != nil {
+	// 	log.Fatalf("Error creating iptables instance: %v", err)
+	// }
 
-	// Example: List rules in the filter table and INPUT chain
-	rules, err := ipt.List("filter", "INPUT")
-	if err != nil {
-		log.Fatalf("Error listing iptables rules: %v", err)
-	}
+	// // Example: List rules in the filter table and INPUT chain
+	// rules, err := ipt.List("filter", "INPUT")
+	// if err != nil {
+	// 	log.Fatalf("Error listing iptables rules: %v", err)
+	// }
 
-	// Print the rules
-	for _, rule := range rules {
-		fmt.Println(rule)
-	}
+	// // Print the rules
+	// for _, rule := range rules {
+	// 	fmt.Println(rule)
+	// }
 
 	validate = validator.New()
 
 }
 
-// Handler
-// func homeHandler(c echo.Context) error {
-// 	return c.Render(http.StatusOK, "home.html", nil)
+/* -- IPTABLES FUNCTIONS -- */
+
+const tableName = "filter"
+
+// func contains(list []string, value string) bool {
+// 	for _, val := range list {
+// 		if val == value {
+// 			return true
+// 		}
+// 	}
+// 	return false
 // }
+
+// func createInputToPortFilter(ipt *iptables.IPTables) {
+// 	chain := "INPUT"
+// 	list, err := ipt.ListChains(tableName)
+// 	log.Printf("chain list:%v", list)
+// 	if err != nil {
+// 		log.Printf("ListChains of Initial failed: %v", err)
+// 	}
+// 	isExists, err := ipt.Exists(tableName, chain, "-j", "port_jump")
+// 	if !isExists {
+// 		err = ipt.Append(tableName, chain, "-j", "port_jump")
+// 		if err != nil {
+// 			log.Printf("Append Input To Port Jump: %v\n", err)
+// 		}
+// 	}
+
+// }
+// func createMacBasedProtFilter(ipt *iptables.IPTables, port uint32) {
+// 	chain := ProtFilterChainName
+// 	err := ipt.ClearChain(tableName, chain)
+// 	if err != nil {
+// 		log.Printf("ClearChain (of non-empty) failed: %v\n", err)
+// 	}
+// 	err = ipt.Insert(tableName, chain, 1, "-p", "tcp", "--dport", fmt.Sprintf("%d", port), "-j", MacFilterChainName)
+// 	err = ipt.Insert(tableName, chain, 1, "-p", "udp", "--dport", fmt.Sprintf("%d", port), "-j", MacFilterChainName)
+// }
+
+// func createMacFilter(ipt *iptables.IPTables) {
+// 	chain := MacFilterChainName
+// 	err := ipt.ClearChain(tableName, chain)
+// 	if err != nil {
+// 		log.Printf("ClearChain (of non-empty) failed: %v", err)
+// 	}
+// 	// put a simple rule in
+// 	err = ipt.Insert(tableName, chain, 1, "-m", "mac", "--mac-source", "00:0F:EA:91:04:08", "-j", "ACCEPT")
+// 	if err != nil {
+// 		log.Printf("Append failed: %v", err)
+// 	}
+// 	err = ipt.Append(tableName, chain, "-j", "DROP")
+// 	if err != nil {
+// 		log.Printf("Append failed: %v", err)
+// 	}
+
+// }
+
+type IPTablesRules struct {
+	Chain string   `json:"chain"`
+	Rules []string `json:"rules"`
+}
+
+func listRules(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		// rules, err := ipt.List(tableName, "INPUT")
+		// if err != nil {
+		// 	return err
+		// }
+
+		// return c.JSON(http.StatusOK, rules)
+
+		// List all chains in the filter table
+		chains, err := ipt.ListChains("filter")
+		if err != nil {
+			return err
+		}
+
+		var allRules []IPTablesRules
+
+		// Iterate over each chain and list rules
+		for _, chain := range chains {
+			rules, err := ipt.List("filter", chain)
+			if err != nil {
+				return err
+			}
+
+			allRules = append(allRules, IPTablesRules{
+				Chain: chain,
+				Rules: rules,
+			})
+		}
+
+		return c.JSON(http.StatusOK, allRules)
+	}
+}
+
+func blockIP(ipt *iptables.IPTables, ip string, srcdst string) error {
+	if srcdst == "source" {
+		return ipt.Append(tableName, "INPUT", "-s", ip, "-j", "DROP")
+	} else { // if srcdst == "destination"
+		return ipt.Append(tableName, "OUTPUT", "-d", ip, "-j", "DROP")
+	}
+}
+
+func blockPort(ipt *iptables.IPTables, port string, protocol string, srcdst string) error {
+	if srcdst == "source" {
+		return ipt.Append(tableName, "INPUT", "-p", protocol, "--dport", port, "-j", "DROP")
+	} else { // if srcdst == "destination"
+		return ipt.Append(tableName, "OUTPUT", "-p", protocol, "--dport", port, "-j", "DROP")
+	}
+}
+
+func addRequestLimit(ipt *iptables.IPTables, ip string) error {
+	return ipt.AppendUnique(tableName, "INPUT", "-s", ip, "-m", "state", "--state", "NEW", "-m", "recent", "--update", "--seconds", "60", "--hitcount", "100", "-j", "DROP")
+}
+
+func addRateLimit(ipt *iptables.IPTables, ip string, rate string) error {
+	return ipt.Append(tableName, "INPUT", "-s", ip, "-m", "limit", "--limit", rate, "-j", "ACCEPT")
+}
+
+func blockIPHandler(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ip := c.FormValue("ip")
+		srcdst := c.FormValue("srcdst")
+
+		err := blockIP(ipt, ip, srcdst)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "Failed to block IP")
+		}
+
+		return c.String(http.StatusOK, "IP blocked successfully")
+	}
+}
+
+func blockPortHandler(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		port := c.FormValue("port")
+		protocol := c.FormValue("protocol")
+		srcdst := c.FormValue("srcdst")
+
+		err := blockPort(ipt, port, protocol, srcdst)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "Failed to block port")
+		}
+
+		return c.String(http.StatusOK, "Port blocked successfully")
+	}
+}
+
+func addRequestLimitHandler(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ip := c.FormValue("ip")
+
+		ipt.AppendUnique(tableName, "INPUT", "-m", "state", "--state", "NEW", "-m", "recent", "--set")
+
+		err := addRequestLimit(ipt, ip)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "Failed to create request limit")
+		}
+
+		return c.String(http.StatusOK, "Request limit added successfully")
+	}
+
+}
+
+func addRateLimitHandler(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ip := c.FormValue("ip")
+		rate := c.FormValue("rate")
+
+		err := addRateLimit(ipt, ip, rate)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "Failed to create rate limit")
+		}
+
+		return c.String(http.StatusOK, "Rate limit added successfully")
+	}
+
+}
+
+/* -- WEBPAGE RELATED FUNCTIONS -- */
+
+func elementsPage(c echo.Context) error {
+	err := c.Render(http.StatusOK, "elements.html", nil)
+	if err != nil {
+		log.Println("Error rendering index page:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return nil
+}
+
+func genericPage(c echo.Context) error {
+	err := c.Render(http.StatusOK, "generic.html", nil)
+	if err != nil {
+		log.Println("Error rendering index page:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return nil
+}
+
+func indexPage(c echo.Context) error {
+	err := c.Render(http.StatusOK, "index.html", nil)
+	if err != nil {
+		log.Println("Error rendering index page:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return nil
+}
 
 func homePage(c echo.Context) error {
 	// return c.File("home.html")
@@ -165,12 +379,30 @@ func registerPage(c echo.Context) error {
 func dashboardPage(c echo.Context) error {
 	// return c.File("dashboard.html")
 
+	// if !isAuthenticated(c) {
+	//     // Render the access denied page
+	//     return c.Render(http.StatusForbidden, "denied.html", nil)
+	// }
+
 	err := c.Render(http.StatusOK, "dashboard.html", nil)
 	if err != nil {
 		log.Println("Error rendering dashboard page:", err)
 		return c.String(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return nil
+}
+
+/* -- AUTHENTICATION / LOGIN / HASHING MANAGEMENT RELATED FUNCTIONS -- */
+
+var (
+	// Key for session encryption. This should be a random, long, and secure key.
+	sessionKey = generateSecureKey(32)
+	store      = sessions.NewCookieStore([]byte(sessionKey))
+)
+
+type User struct {
+	Username string `json:"username" validate:"required,alphanum"`
+	Password string `json:"password" validate:"required"`
 }
 
 // Middleware to check if the user is authenticated
@@ -191,8 +423,11 @@ func login(c echo.Context) error {
 
 	// Validate credentials
 	user, err := getUserByUsername(username) // Implement this function to retrieve user data
-	if err != nil {
-		// Handle error, user not found
+	if err != nil || !CheckPasswordHash(password, user.Password) {
+		// Render the login page again with an error message
+		return c.Render(http.StatusOK, "login.html", map[string]interface{}{
+			"Error": "Invalid Credentials",
+		})
 	}
 
 	// Validate credentials (this is a simplified example)
@@ -207,6 +442,22 @@ func login(c echo.Context) error {
 	}
 
 	return c.String(http.StatusUnauthorized, "Invalid credentials")
+}
+
+func logout(c echo.Context) error {
+	session, _ := store.Get(c.Request(), "session")
+
+	// Clearing the session
+	session.Options.MaxAge = -1
+
+	err := session.Save(c.Request(), c.Response())
+	if err != nil {
+		log.Println("Error saving session:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	// Redirecting to the home page
+	return c.Redirect(http.StatusSeeOther, "/")
 }
 
 // func registerUser(c echo.Context) error {

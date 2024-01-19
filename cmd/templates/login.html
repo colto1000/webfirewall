@@ -1,25 +1,65 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>webfirewall - Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../static/css/main.css" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <noscript><link rel="stylesheet" href="../static/css/noscript.css" /></noscript>
 </head>
-<body>
-    <nav>
-        <span>Login</span>
-        <div>
-            <a href="/register">Register</a>
-            <a href="/home">Home</a>
+
+<body class="is-preload">
+    
+    <!-- Wrapper -->
+    <div id="wrapper">
+        
+        <!-- Header -->
+        <header id="header">
+            <h1>Login</h1>
+        </header>
+        
+        <!-- Main -->
+        <div id="main">
+            
+            <!-- Content -->
+            <section id="content" class="main">
+                <form method="post" action="/login">
+                    <div class="row gtr-uniform">
+                        <div class="col-12">
+                            <input type="text" name="username" id="username" value="" placeholder="Username" />
+                        </div>
+                        <div class="col-12">
+                            <input type="password" name="password" id="password" value="" placeholder="Password" />
+                        </div>
+                        <div class="col-12">
+                            <ul class="actions">
+                                <li><input type="submit" value="Login" class="primary" /></li>
+                                <!-- <li><input type="button" value="Register" href="/register"/></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+                {{ if .Error }}
+                    <div style="color: red;">{{ .Error }}</div>
+                    <br />
+                {{ end }}
+                <p>New user? <a href="/register"><b>Register here</b></a>.</p>
+            </section>
+            
         </div>
-    </nav>
-    <main>
-        <h1>Login</h1>
-        <form action="/login" method="post">
-            <input type="text" placeholder="Username" name="username" required>
-            <input type="password" placeholder="Password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <p>New user? <a href="/register">Register here</a>.</p>
-    </main>
+        
+    </div>
+    
+    <!-- Scripts -->
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/jquery.scrollex.min.js"></script>
+    <script src="../static/js/jquery.scrolly.min.js"></script>
+    <script src="../static/js/browser.min.js"></script>
+    <script src="../static/js/breakpoints.min.js"></script>
+    <script src="../static/js/util.js"></script>
+    <script src="../static/js/main.js"></script>
+    
 </body>
 </html>

@@ -1,0 +1,99 @@
+2024/01/16 16:35:16 ListChains failed: running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: iptables v1.8.7 (nf_tables): Could not fetch rule set generation id: Permission denied (you must be root)
+
+2024/01/16 16:35:16 ListChains doesn't contain the new chain sample1
+2024/01/16 16:35:16 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+{"time":"2024-01-16T16:35:16.515199496-06:00","level":"FATAL","prefix":"echo","file":"main.go","line":"113","message":"listen tcp :8082: bind: address already in use"}
+2024/01/16 16:35:46 ListChains failed: running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: iptables v1.8.7 (nf_tables): Could not fetch rule set generation id: Permission denied (you must be root)
+
+2024/01/16 16:35:46 ListChains doesn't contain the new chain sample1
+2024/01/16 16:35:46 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-16T16:36:42.149012426-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":18750,"latency_human":"18.75µs","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-16T16:36:42.153318792-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":80370,"latency_human":"80.37µs","bytes_in":0,"bytes_out":2089}
+{"time":"2024-01-16T16:36:42.192398244-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":8350041,"latency_human":"8.350041ms","bytes_in":0,"bytes_out":831}
+{"time":"2024-01-16T16:36:42.242181693-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":404,"error":"code=404, message=Not Found","latency":50500,"latency_human":"50.5µs","bytes_in":0,"bytes_out":24}
+2024/01/18 14:16:16 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-18T14:16:30.44620799-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":177720,"latency_human":"177.72µs","bytes_in":0,"bytes_out":6700}
+{"time":"2024-01-18T14:16:30.479962994-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":10339945,"latency_human":"10.339945ms","bytes_in":0,"bytes_out":831}
+{"time":"2024-01-18T14:16:30.480306665-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/breakpoints.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":9895349,"latency_human":"9.895349ms","bytes_in":0,"bytes_out":2439}
+{"time":"2024-01-18T14:16:30.480831657-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/css/main.css","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":13551710,"latency_human":"13.55171ms","bytes_in":0,"bytes_out":3910}
+{"time":"2024-01-18T14:16:30.59452547-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-solid-900.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":7369962,"latency_human":"7.369962ms","bytes_in":0,"bytes_out":3923}
+{"time":"2024-01-18T14:16:30.594916325-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-regular-400.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":6996705,"latency_human":"6.996705ms","bytes_in":0,"bytes_out":3923}
+{"time":"2024-01-18T14:16:30.595630623-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-brands-400.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":7215352,"latency_human":"7.215352ms","bytes_in":0,"bytes_out":3923}
+{"time":"2024-01-18T14:16:33.006949673-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":121731,"latency_human":"121.731µs","bytes_in":0,"bytes_out":2089}
+{"time":"2024-01-18T14:16:33.065204849-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":404,"error":"code=404, message=Not Found","latency":26570,"latency_human":"26.57µs","bytes_in":0,"bytes_out":24}
+{"time":"2024-01-18T14:16:36.89002235-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":123831716,"latency_human":"123.831716ms","bytes_in":36,"bytes_out":0}
+{"time":"2024-01-18T14:16:36.893515011-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":240970,"latency_human":"240.97µs","bytes_in":0,"bytes_out":5845}
+{"time":"2024-01-18T14:16:38.679486484-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: Fatal: can't open lock file /run/xtables.lock: Permission denied\n","latency":750242,"latency_human":"750.242µs","bytes_in":0,"bytes_out":36}
+{"time":"2024-01-18T14:16:51.46770341-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":164031,"latency_human":"164.031µs","bytes_in":0,"bytes_out":5845}
+{"time":"2024-01-18T14:16:53.171552816-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: Fatal: can't open lock file /run/xtables.lock: Permission denied\n","latency":827124,"latency_human":"827.124µs","bytes_in":0,"bytes_out":36}
+{"time":"2024-01-18T14:17:13.165936594-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":193540,"latency_human":"193.54µs","bytes_in":0,"bytes_out":5845}
+{"time":"2024-01-18T14:17:27.571757481-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: Fatal: can't open lock file /run/xtables.lock: Permission denied\n","latency":615522,"latency_human":"615.522µs","bytes_in":0,"bytes_out":36}
+2024/01/18 14:45:52 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-18T14:45:58.961064473-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":47860,"latency_human":"47.86µs","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T14:45:58.964199885-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":74949,"latency_human":"74.949µs","bytes_in":0,"bytes_out":2089}
+{"time":"2024-01-18T14:46:01.607892769-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":91359683,"latency_human":"91.359683ms","bytes_in":36,"bytes_out":0}
+{"time":"2024-01-18T14:46:01.611026395-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":234969,"latency_human":"234.969µs","bytes_in":0,"bytes_out":6186}
+{"time":"2024-01-18T14:46:03.399913653-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: Fatal: can't open lock file /run/xtables.lock: Permission denied\n","latency":943428,"latency_human":"943.428µs","bytes_in":0,"bytes_out":36}
+{"time":"2024-01-18T14:46:12.377781416-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":124789,"latency_human":"124.789µs","bytes_in":0,"bytes_out":6186}
+2024/01/18 15:03:42 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-18T15:03:51.368947814-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":18960,"latency_human":"18.96µs","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T15:03:51.372138895-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":81019,"latency_human":"81.019µs","bytes_in":0,"bytes_out":2089}
+{"time":"2024-01-18T15:03:51.425763606-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":9564358,"latency_human":"9.564358ms","bytes_in":0,"bytes_out":831}
+{"time":"2024-01-18T15:03:51.429238988-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":404,"error":"code=404, message=Not Found","latency":78670,"latency_human":"78.67µs","bytes_in":0,"bytes_out":24}
+{"time":"2024-01-18T15:03:58.947743297-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":91920989,"latency_human":"91.920989ms","bytes_in":36,"bytes_out":0}
+{"time":"2024-01-18T15:03:58.951005314-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":348349,"latency_human":"348.349µs","bytes_in":0,"bytes_out":9611}
+{"time":"2024-01-18T15:04:11.346875461-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/block-ip","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"","latency":772587,"latency_human":"772.587µs","bytes_in":519,"bytes_out":18}
+{"time":"2024-01-18T15:05:42.019670966-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: Fatal: can't open lock file /run/xtables.lock: Permission denied\n","latency":736788,"latency_human":"736.788µs","bytes_in":0,"bytes_out":36}
+{"time":"2024-01-18T15:39:17.494010156-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":430397,"latency_human":"430.397µs","bytes_in":0,"bytes_out":9611}
+{"time":"2024-01-18T15:39:17.52242293-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":5929625,"latency_human":"5.929625ms","bytes_in":0,"bytes_out":831}
+{"time":"2024-01-18T15:39:17.530616028-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":404,"error":"code=404, message=Not Found","latency":81709,"latency_human":"81.709µs","bytes_in":0,"bytes_out":24}
+{"time":"2024-01-18T15:39:19.125181848-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/block-ip","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"","latency":1007435,"latency_human":"1.007435ms","bytes_in":524,"bytes_out":18}
