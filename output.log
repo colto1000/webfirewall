@@ -97,3 +97,83 @@ ____________________________________O/_______
 {"time":"2024-01-18T15:39:17.52242293-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":5929625,"latency_human":"5.929625ms","bytes_in":0,"bytes_out":831}
 {"time":"2024-01-18T15:39:17.530616028-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":404,"error":"code=404, message=Not Found","latency":81709,"latency_human":"81.709µs","bytes_in":0,"bytes_out":24}
 {"time":"2024-01-18T15:39:19.125181848-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/block-ip","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"","latency":1007435,"latency_human":"1.007435ms","bytes_in":524,"bytes_out":18}
+2024/01/18 21:13:56 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-18T21:14:09.467107052-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":234448,"latency_human":"234.448µs","bytes_in":0,"bytes_out":6772}
+{"time":"2024-01-18T21:14:09.523027366-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":12893503,"latency_human":"12.893503ms","bytes_in":0,"bytes_out":831}
+{"time":"2024-01-18T21:14:09.523027676-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/images/logo.svg","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":13345928,"latency_human":"13.345928ms","bytes_in":0,"bytes_out":1290}
+{"time":"2024-01-18T21:14:09.52320133-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/css/main.css","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":16490317,"latency_human":"16.490317ms","bytes_in":0,"bytes_out":3910}
+{"time":"2024-01-18T21:14:09.524072138-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":304,"error":"","latency":9381590,"latency_human":"9.38159ms","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:14:09.524572673-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrollex.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":304,"error":"","latency":8756056,"latency_human":"8.756056ms","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:14:09.525418006-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/browser.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":304,"error":"","latency":8576563,"latency_human":"8.576563ms","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:14:09.526730595-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/breakpoints.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":304,"error":"","latency":9111463,"latency_human":"9.111463ms","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:14:09.527807567-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/util.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":304,"error":"","latency":9585989,"latency_human":"9.585989ms","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:14:09.529170485-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/main.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":304,"error":"","latency":8797646,"latency_human":"8.797646ms","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:14:09.534558092-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/css/fontawesome-all.min.css","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":7742058,"latency_human":"7.742058ms","bytes_in":0,"bytes_out":59401}
+{"time":"2024-01-18T21:14:09.548589598-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/css/images/overlay.png","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":8090985,"latency_human":"8.090985ms","bytes_in":0,"bytes_out":20100}
+{"time":"2024-01-18T21:14:09.552517226-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-solid-900.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":7319150,"latency_human":"7.31915ms","bytes_in":0,"bytes_out":78268}
+{"time":"2024-01-18T21:14:09.564220272-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-regular-400.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":7126583,"latency_human":"7.126583ms","bytes_in":0,"bytes_out":13224}
+{"time":"2024-01-18T21:14:09.577581969-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/images/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":7624243,"latency_human":"7.624243ms","bytes_in":0,"bytes_out":3774}
+2024/01/18 21:36:26 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+2024/01/18 21:37:19 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-18T21:37:26.437725069-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":240598,"latency_human":"240.598µs","bytes_in":0,"bytes_out":6802}
+{"time":"2024-01-18T21:37:26.516989722-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/js/jquery.scrolly.min.js","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":9524932,"latency_human":"9.524932ms","bytes_in":0,"bytes_out":831}
+{"time":"2024-01-18T21:37:26.517182436-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/css/main.css","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":12337694,"latency_human":"12.337694ms","bytes_in":0,"bytes_out":3910}
+{"time":"2024-01-18T21:37:26.521165848-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/images/logo.svg","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":5097577,"latency_human":"5.097577ms","bytes_in":0,"bytes_out":1290}
+{"time":"2024-01-18T21:37:26.537167498-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/css/fontawesome-all.min.css","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":12896854,"latency_human":"12.896854ms","bytes_in":0,"bytes_out":59401}
+{"time":"2024-01-18T21:37:26.596516194-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-regular-400.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":5579999,"latency_human":"5.579999ms","bytes_in":0,"bytes_out":13224}
+{"time":"2024-01-18T21:37:26.596901582-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-solid-900.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":8196603,"latency_human":"8.196603ms","bytes_in":0,"bytes_out":78268}
+{"time":"2024-01-18T21:37:26.59836112-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/static/webfonts/fa-brands-400.woff2","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":5975553,"latency_human":"5.975553ms","bytes_in":0,"bytes_out":76736}
+{"time":"2024-01-18T21:37:26.659885637-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/images/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":8168704,"latency_human":"8.168704ms","bytes_in":0,"bytes_out":3774}
+{"time":"2024-01-18T21:37:27.854859162-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":85839,"latency_human":"85.839µs","bytes_in":0,"bytes_out":2161}
+{"time":"2024-01-18T21:37:27.916036117-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/images/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":6244588,"latency_human":"6.244588ms","bytes_in":0,"bytes_out":3774}
+{"time":"2024-01-18T21:37:29.544502936-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":117046676,"latency_human":"117.046676ms","bytes_in":36,"bytes_out":0}
+{"time":"2024-01-18T21:37:29.548259796-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":290407,"latency_human":"290.407µs","bytes_in":0,"bytes_out":11516}
+{"time":"2024-01-18T21:37:31.117615902-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":500,"error":"running [/usr/sbin/iptables -t filter -S --wait]: exit status 4: Fatal: can't open lock file /run/xtables.lock: Permission denied\n","latency":825519,"latency_human":"825.519µs","bytes_in":0,"bytes_out":36}
+2024/01/18 21:39:10 templatesPath:  cmd/templates/*.html
+
+   ____    __
+  / __/___/ /  ___
+ / _// __/ _ \/ _ \
+/___/\__/_//_/\___/ v4.11.3
+High performance, minimalist Go web framework
+https://echo.labstack.com
+____________________________________O/_______
+                                    O\
+⇨ http server started on [::]:8082
+{"time":"2024-01-18T21:39:30.194908448-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":18070,"latency_human":"18.07µs","bytes_in":0,"bytes_out":0}
+{"time":"2024-01-18T21:39:30.200038987-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":670526,"latency_human":"670.526µs","bytes_in":0,"bytes_out":2161}
+{"time":"2024-01-18T21:39:32.165078096-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"POST","uri":"/login","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":302,"error":"","latency":92026528,"latency_human":"92.026528ms","bytes_in":36,"bytes_out":0}
+{"time":"2024-01-18T21:39:32.168432449-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":218138,"latency_human":"218.138µs","bytes_in":0,"bytes_out":11516}
+{"time":"2024-01-18T21:39:37.12900249-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/list-rules","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":4662187,"latency_human":"4.662187ms","bytes_in":0,"bytes_out":208}
+{"time":"2024-01-18T21:44:35.395718829-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/dashboard","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":429976,"latency_human":"429.976µs","bytes_in":0,"bytes_out":11516}
+{"time":"2024-01-18T21:44:35.437348746-06:00","id":"","remote_ip":"::1","host":"localhost:8082","method":"GET","uri":"/images/favicon.ico","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0","status":200,"error":"","latency":6572231,"latency_human":"6.572231ms","bytes_in":0,"bytes_out":3774}
