@@ -17,8 +17,11 @@ Or if using the precompiled binary _(experimental)_, then: **`chmod +x webfirewa
 
 ## _**Notes**_
 
-- This project relies on Legacy IPTables modules, so you must first run `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy` if you are not already running a Legacy version of IPTables.
-- You may have to create an SQL database to fit line 41: `dsn := "webadmin:password12@tcp(localhost:3306)/webfirewall"`
+- This project relies on Legacy IPTables modules, so you must first switch to Legacy IPTables if you're not already running it.
+  - Run: `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy`
+- Some IPTables functionality (like Request Limiting) may or may not work based on what operating system you are running.
+- You may have to create an SQL database to fit line 41:
+  - `dsn := "webadmin:password12@tcp(localhost:3306)/webfirewall"`
   - **Table Name:** "webfirewall" on SQL server on local machine's **Port 3306**, **Username:** "webadmin", **Password:** "password12".
   - _This will be fixed with implementation of Go's [Embed](https://pkg.go.dev/embed) library._
 - This project has been tested with Go v1.21.5 in Ubuntu 22.04.
