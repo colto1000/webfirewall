@@ -22,14 +22,16 @@ import (
 )
 
 const (
-	tableName = "filter"      // IPTables table name
-	port      = ":8082"       // echo web server port
-	logfile   = "output.log"  // logfile for program output
-	SQLdb     = "webfirewall" // SQL database name
-	SQLusr    = "webadmin"    // SQL username
-	SQLpw     = "password12"  // SQL plaintext password
-	SQLip     = "localhost"   // SQL server IP (e.g. localhost)
-	SQLport   = "3306"        // SQL server port (e.g. 3306)
+	tableName     = "filter"            // IPTables table name
+	port          = ":8082"             // echo web server port
+	logfile       = "output.log"        // logfile for program output
+	maxLogSize    = 10 * 1024 * 1024    // 10 MB
+	logfileBackup = "output_backup.log" // backup when logfile gets too big
+	SQLdb         = "webfirewall"       // SQL database name
+	SQLusr        = "webadmin"          // SQL username
+	SQLpw         = "password12"        // SQL plaintext password
+	SQLip         = "localhost"         // SQL server IP (e.g. localhost)
+	SQLport       = "3306"              // SQL server port (e.g. 3306)
 )
 
 type TemplateRenderer struct {
@@ -64,20 +66,31 @@ func main() {
 	consoleOutput := os.Stdout
 
 	// Open a log file
-	logFile, err := os.OpenFile(logfile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	logCheck, err := os.Stat(logfile)
 	if err != nil {
-		log.Fatalf("error opening file: %v", err)
+		log.Printf("Unable to check log file: %v", err)
+	} else if logCheck.Size() >= maxLogSize {
+		err := os.Rename(logfile, logfileBackup)
+		if err != nil {
+			log.Fatalf("Error renaming log file to backup: %v", err)
+		} else {
+			log.Printf("Log file max exceeded, moved logfile to backup: %v", logfileBackup)
+		}
 	}
-	defer logFile.Close()
+	logger, err := os.OpenFile(logfile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err != nil {
+		log.Fatalf("Error opening file: %v", err)
+	}
+	defer logger.Close()
 
-	if _, err := logFile.WriteString("\n\n"); err != nil { // creating some blank space between program runs
+	if _, err := logger.WriteString("\n\n"); err != nil { // creating some blank space between program runs
 		log.Println(err)
 	}
 
 	// Redirect output to the file
-	log.SetOutput(logFile)
-	os.Stdout = logFile
-	os.Stderr = logFile
+	log.SetOutput(logger)
+	os.Stdout = logger
+	os.Stderr = logger
 
 	// Create a new Echo and IPTables instance
 	e := echo.New()
