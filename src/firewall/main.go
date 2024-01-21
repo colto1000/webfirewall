@@ -12,7 +12,6 @@ import (
 	"os"
 	"path/filepath"
 
-	// for rate limiting
 	"github.com/coreos/go-iptables/iptables"
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"

@@ -13,7 +13,7 @@ From the root directory of this project, run the command: `go build -o firewall 
 
 ...Then, run with: `sudo ./firewall`
 
-Or if using the precompiled binary _(experimental)_, then: **`chmod +x webfirewall_linux_amd64`** and **`./webfirewall_linux_amd64`**
+_Or if using the precompiled binary _(experimental)_, then: `chmod +x webfirewall_linux_amd64` and `./webfirewall_linux_amd64`_
 
 ## _**Notes**_
 
