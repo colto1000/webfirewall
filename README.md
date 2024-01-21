@@ -24,6 +24,8 @@ _Or if using the precompiled binary _(experimental)_, then: `chmod +x webfirewal
   - `dsn := "webadmin:password12@tcp(localhost:3306)/webfirewall"`
   - **Table Name:** "webfirewall" on SQL server on local machine's **Port 3306**, **Username:** "webadmin", **Password:** "password12".
   - _This will be fixed with implementation of Go's [Embed](https://pkg.go.dev/embed) library._
+- Install the required iptables modules, if not already installed. 
+  - `sudo apt-get install xtables-addons-common xtables-addons-dkms`
 - This project has been tested with Go v1.21.5 in Ubuntu 22.04.
 
 ## Credit:

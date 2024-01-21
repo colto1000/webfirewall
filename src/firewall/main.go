@@ -117,6 +117,7 @@ func main() {
 
 	e.POST("/block-ip", blockIPHandler(ipt))
 	e.POST("/block-port", blockPortHandler(ipt))
+	e.POST("/block-service", blockServiceHandler(ipt))
 	e.POST("/add-request-limit", addRequestLimitHandler(ipt))
 	e.POST("/add-rate-limit", addRateLimitHandler(ipt /*, &ln*/))
 	e.GET("/list-rules", listRules(ipt))
@@ -199,18 +200,32 @@ func resetRules(ipt *iptables.IPTables) echo.HandlerFunc {
 
 func blockIP(ipt *iptables.IPTables, ip string, srcdst string) error {
 	if srcdst == "source" {
-		return ipt.Append(tableName, "INPUT", "-s", ip, "-j", "DROP")
+		return ipt.AppendUnique(tableName, "INPUT", "-s", ip, "-j", "DROP")
 	} else { // if srcdst == "destination"
-		return ipt.Append(tableName, "OUTPUT", "-d", ip, "-j", "DROP")
+		return ipt.AppendUnique(tableName, "OUTPUT", "-d", ip, "-j", "DROP")
 	}
 }
 
 func blockPort(ipt *iptables.IPTables, port string, protocol string, srcdst string) error {
 	if srcdst == "source" {
-		return ipt.Append(tableName, "INPUT", "-p", protocol, "--dport", port, "-j", "DROP")
+		return ipt.AppendUnique(tableName, "INPUT", "-p", protocol, "--dport", port, "-j", "DROP")
 	} else { // if srcdst == "destination"
-		return ipt.Append(tableName, "OUTPUT", "-p", protocol, "--dport", port, "-j", "DROP")
+		return ipt.AppendUnique(tableName, "OUTPUT", "-p", protocol, "--dport", port, "-j", "DROP")
 	}
+}
+
+func blockService(ipt *iptables.IPTables, port string) error {
+	err := ipt.AppendUnique(tableName, "INPUT", "-p", "tcp", "--dport", port, "-j", "DROP")
+	if err != nil {
+		return err
+	}
+
+	err = ipt.AppendUnique(tableName, "INPUT", "-p", "udp", "--dport", port, "-j", "DROP")
+	if err != nil {
+		return err
+	}
+
+	return err
 }
 
 func addRequestLimit(ipt *iptables.IPTables, ip string, sec string, hits string) error {
@@ -247,6 +262,19 @@ func blockPortHandler(ipt *iptables.IPTables) echo.HandlerFunc {
 		}
 
 		return c.String(http.StatusOK, "Port blocked successfully")
+	}
+}
+
+func blockServiceHandler(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		port := c.FormValue("port")
+
+		err := blockService(ipt, port)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "Failed to block service")
+		}
+
+		return c.String(http.StatusOK, "Service blocked successfully")
 	}
 }
 

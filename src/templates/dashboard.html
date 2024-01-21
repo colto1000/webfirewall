@@ -32,298 +32,363 @@
         <!-- Main -->
         <div id="main">
                 
-                <!-- Lists -->
-						<section id="clusters" class="main">
-							<h2><b>IPTables</b></h2>
-                            <h3><b>List Rules:</b></h3>
+            <!-- ... -->
+            <section id="clusters" class="main">
+                <h2><b>IPTables</b></h2>
+                <h3><b>List Rules:</b></h3>
+                <div class="col-12">
+                    <ul class="actions">
+                        <li><button type="submit" class="primary" id="listRules">Refresh</button></li>
+                        <li><button class="button" type="reset" id="resetRules">Reset All</button></li>
+                    </ul>
+                </div>
+
+                <div id="rules">
+                    <ul class="alt">
+                        <li>This is filler.</li>
+                        <li>And more filler.</li>
+                        <li>Please click Refresh now.</li>
+                        <li>Maybe someday this will be a nice list of rules.</li>
+                        <script>
+                            document.getElementById('listRules').addEventListener('click', function() {
+                                event.preventDefault();
+                                fetch('/list-rules')
+                                .then(response => response.json())
+                                .then(data => {
+                                    const rulesDiv = document.getElementById('rules');
+                                    rulesDiv.innerHTML = '<pre>' + JSON
+                                        
+                                        .stringify(data, null, 2) + '</pre>';
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                                });
+                        </script>
+                        <script>
+                            document.getElementById('resetRules').addEventListener('click', function() {
+                                event.preventDefault();
+                                fetch('/reset-rules')
+                                .then(response => response.json())
+                                .then(data => {
+                                    const rulesDiv = document.getElementById('rules');
+                                    rulesDiv.innerHTML = '<pre>' + JSON
+                                        
+                                        .stringify(data, null, 2) + '</pre>';
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                                });
+                        </script>
+                    </ul>
+                </div>
+
+                <br>
+                
+                <div id ="blockIPdiv">
+                    <h3><b>Block by IP:</b></h3>
+
+                    <form id="blockIP">
+                        <div class="row gtr-uniform">
+                            <div class="col-12">
+                                <label for="ip">IP Address:</label>
+                                <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
+                            </div>
+
+                            <div class="col-6 col-12-xsmall">
+                                <label for="protocol">Protocol:</label>
+                                <select name="protocol" id="protocol">
+                                    <option value="">- Select a Protocol -</option>
+                                    <option value="tcp">TCP</option>
+                                    <option value="udp">UDP</option>
+                                    <option value="icmp">ICMP</option>
+                                </select>
+                            </div>
+
+                            <div class="col-6 col-12-xsmall">
+                                <label for="srcdst">Source/Destination:</label>
+                                <select name="srcdst" id="srcdst">
+                                    <option value="">- Select Source or Destination -</option>
+                                    <option value="source">Source</option>
+                                    <option value="destination">Destination</option>
+                                </select>
+                            </div>
+
                             <div class="col-12">
                                 <ul class="actions">
-                                    <li><button type="submit" class="primary" id="listRules">Refresh</button></li>
-                                    <li><button class="button" type="reset" id="resetRules">Reset All</button></li>
+                                    <li><button type="submit" class="primary">Submit</button></li>
+                                    <li><button class="button" type="reset">Reset</button></li>
                                 </ul>
                             </div>
+                        </div>
+                    </form>
 
-                            <div id="rules">
-                                <ul class="alt">
-                                    <li>This is filler.</li>
-                                    <li>And more filler.</li>
-                                    <li>Please click Refresh now.</li>
-                                    <li>Maybe someday this will be a nice list of rules.</li>
-                                    <script>
-                                        document.getElementById('listRules').addEventListener('click', function() {
-                                            event.preventDefault();
-                                            fetch('/list-rules')
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                const rulesDiv = document.getElementById('rules');
-                                                rulesDiv.innerHTML = '<pre>' + JSON
-                                                    
-                                                    .stringify(data, null, 2) + '</pre>';
-                                                })
-                                                .catch(error => console.error('Error:', error));
-                                            });
-                                    </script>
-                                    <script>
-                                        document.getElementById('resetRules').addEventListener('click', function() {
-                                            event.preventDefault();
-                                            fetch('/reset-rules')
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                const rulesDiv = document.getElementById('rules');
-                                                rulesDiv.innerHTML = '<pre>' + JSON
-                                                    
-                                                    .stringify(data, null, 2) + '</pre>';
-                                                })
-                                                .catch(error => console.error('Error:', error));
-                                            });
-                                    </script>
+                    <script>
+                        document.getElementById('blockIP').addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            
+                            const formData = new FormData(this);
+                            
+                            fetch('/block-ip', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text())
+                            .then(data => {
+                                alert(data);
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+
+                </div>
+
+                <br>
+
+                <div id ="blockPortdiv">
+                    <h3><b>Block by Port:</b></h3>
+
+                    <form id="blockPort">
+                        <div class="row gtr-uniform">
+                            <div class="col-12">
+                                <label for="port">Port:</label>
+                                <input type="text" id="port" name="port" placeholder="e.g., 80">
+                            </div>
+
+                            <div class="col-6 col-12-xsmall">
+                                <label for="protocol">Protocol:</label>
+                                <select name="protocol" id="protocol">
+                                    <option value="">- Select a Protocol -</option>
+                                    <option value="tcp">TCP</option>
+                                    <option value="udp">UDP</option>
+                                    <option value="icmp">ICMP</option>
+                                </select>
+                            </div>
+
+                            <div class="col-6 col-12-xsmall">
+                                <label for="srcdst">Source/Destination:</label>
+                                <select name="srcdst" id="srcdst">
+                                    <option value="">- Select Source or Destination -</option>
+                                    <option value="source">Source</option>
+                                    <option value="destination">Destination</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><button type="submit" class="primary">Submit</button></li>
+                                    <li><button class="button" type="reset">Clear</button></li>
                                 </ul>
                             </div>
-
-                            <br>
+                        </div>
+                    </form>
+                
+                    <script>
+                        document.getElementById('blockPort').addEventListener('submit', function(event) {
+                            event.preventDefault();
                             
-                            <div id ="blockIPdiv">
-                                <h3><b>Block by IP:</b></h3>
+                            const formData = new FormData(this);
+                            
+                            fetch('/block-port', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text())
+                            .then(data => {
+                                alert(data);
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+                </div>
 
-                                <form id="blockIP">
-                                    <div class="row gtr-uniform">
-                                        <div class="col-12">
-                                            <label for="ip">IP Address:</label>
-                                            <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
-                                        </div>
+                <br>
 
-                                        <div class="col-6 col-12-xsmall">
-                                            <label for="protocol">Protocol:</label>
-                                            <select name="protocol" id="protocol">
-                                                <option value="tcp">TCP</option>
-                                                <option value="udp">UDP</option>
-                                                <option value="icmp">ICMP</option>
-                                            </select>
-                                        </div>
+                <div id ="blockServicediv">
+                    <h3><b>Block by Service:</b></h3>
+                    <h4><i>Block all traffic based on popular service types.</i></h4>
 
-                                        <div class="col-6 col-12-xsmall">
-                                            <label for="srcdst">Source/Destination:</label>
-                                            <select name="srcdst" id="srcdst">
-                                                <option value="source">Source</option>
-                                                <option value="destination">Destination</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <ul class="actions">
-                                                <li><button type="submit" class="primary">Submit</button></li>
-                                                <li><button class="button" type="reset">Reset</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <script>
-                                    document.getElementById('blockIP').addEventListener('submit', function(event) {
-                                        event.preventDefault();
-                                        
-                                        const formData = new FormData(this);
-                                        
-                                        fetch('/block-ip', {
-                                            method: 'POST',
-                                            body: formData
-                                        })
-                                        .then(response => response.text())
-                                        .then(data => {
-                                            alert(data);
-                                        })
-                                        .catch(error => console.error('Error:', error));
-                                    });
-                                </script>
-
+                    <form id="blockService">
+                        <div class="row gtr-uniform">
+                            <div class="col-12">
+                                <label for="port">Service:</label>
+                                <select name="port" id="port" required>
+                                    <option value="">- Select a Service -</option>
+                                    <option value="21">FTP (21)</option>
+                                    <option value="22">SSH (22)</option>
+                                    <option value="23">Telnet (23)</option>
+                                    <option value="25">SMTP (25)</option>
+                                    <option value="53">DNS (53)</option>
+                                    <option value="80">HTTP (80)</option>
+                                    <option value="110">POP3 (110)</option>
+                                    <option value="111">rpcbind (111)</option>
+                                    <option value="135">msrpc (135)</option>
+                                    <option value="139">netbios-ssn (139)</option>
+                                    <option value="143">IMAP (143)</option>
+                                    <option value="443">HTTPS (443)</option>
+                                    <option value="445">microsoft-ds (445)</option>
+                                    <option value="993">IMAPS (993)</option>
+                                    <option value="995">POP3S (995)</option>
+                                    <option value="1723">PPTP (1723)</option>
+                                    <option value="3306">MySQL (3306)</option>
+                                    <option value="3389">ms-wbt-server (3389)</option>
+                                    <option value="5900">VNC (5900)</option>
+                                    <option value="8080">HTTP-proxy (8080)</option>
+                                </select>
                             </div>
 
-                            <br>
-
-                            <div id ="blockPortdiv">
-                                <h3><b>Block by Port:</b></h3>
-
-                                <form id="blockPort">
-                                    <div class="row gtr-uniform">
-                                        <div class="col-12">
-                                            <label for="port">Port:</label>
-                                            <input type="text" id="port" name="port" placeholder="e.g., 80">
-                                        </div>
-
-                                        <div class="col-6 col-12-xsmall">
-                                            <label for="protocol">Protocol:</label>
-                                            <select name="protocol" id="protocol">
-                                                <option value="tcp">TCP</option>
-                                                <option value="udp">UDP</option>
-                                                <option value="icmp">ICMP</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-6 col-12-xsmall">
-                                            <label for="srcdst">Source/Destination:</label>
-                                            <select name="srcdst" id="srcdst">
-                                                <option value="source">Source</option>
-                                                <option value="destination">Destination</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <ul class="actions">
-                                                <li><button type="submit" class="primary">Submit</button></li>
-                                                <li><button class="button" type="reset">Clear</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><button type="submit" class="primary">Submit</button></li>
+                                    <li><button class="button" type="reset">Clear</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                
+                    <script>
+                        document.getElementById('blockService').addEventListener('submit', function(event) {
+                            event.preventDefault();
                             
-                                <script>
-                                    document.getElementById('blockPort').addEventListener('submit', function(event) {
-                                        event.preventDefault();
-                                        
-                                        const formData = new FormData(this);
-                                        
-                                        fetch('/block-port', {
-                                            method: 'POST',
-                                            body: formData
-                                        })
-                                        .then(response => response.text())
-                                        .then(data => {
-                                            alert(data);
-                                        })
-                                        .catch(error => console.error('Error:', error));
-                                    });
-                                </script>
+                            const formData = new FormData(this);
+                            
+                            fetch('/block-service', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text())
+                            .then(data => {
+                                alert(data);
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+                </div>
+
+                <br>
+
+                <div id ="addRequestLimitdiv">
+                    <h3><b>Add Request Limit:</b></h3>
+
+                    <form id="addRequestLimit">
+                        <div class="row gtr-uniform">
+                            <div class="col-12">
+                                <label for="ip">Source IP:</label>
+                                <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
                             </div>
 
-                            <br>
-
-                            <div id ="addRequestLimitdiv">
-                                <h3><b>Add Request Limit:</b></h3>
-
-                                <form id="addRequestLimit">
-                                    <div class="row gtr-uniform">
-                                        <div class="col-12">
-                                            <label for="ip">Source IP:</label>
-                                            <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
-                                        </div>
-
-                                        <div class="col-6 col-12-xsmall">
-                                            <label for="sec">Seconds:</label>
-                                            <input type="text" id="sec" name="sec" placeholder="e.g., 60">
-                                        </div>
-
-                                        <div class="col-6 col-12-xsmall">
-                                            <label for="hits">Hit Count:</label>
-                                            <input type="text" id="hits" name="hits" placeholder="e.g., 100">
-                                        </div>
-
-                                        <div class="col-12">
-                                            <ul class="actions">
-                                                <li><button type="submit" class="primary">Submit</button></li>
-                                                <li><button class="button" type="reset">Clear</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
-                            
-                                <script>
-                                    document.getElementById('addRequestLimit').addEventListener('submit', function(event) {
-                                        event.preventDefault();
-                                        
-                                        const formData = new FormData(this);
-                                        
-                                        fetch('/add-request-limit', {
-                                            method: 'POST',
-                                            body: formData
-                                        })
-                                        .then(response => response.text())
-                                        .then(data => {
-                                            alert(data);
-                                        })
-                                        .catch(error => console.error('Error:', error));
-                                    });
-                                </script>
+                            <div class="col-6 col-12-xsmall">
+                                <label for="sec">Seconds:</label>
+                                <input type="text" id="sec" name="sec" placeholder="e.g., 60">
                             </div>
 
-                            <br>
-
-                            <div id ="addRateLimitdiv">
-                                <h3><b>Add Request Limit:</b></h3>
-
-                                <form id="addRateLimit">
-                                    <div class="row gtr-uniform">
-                                        <div class="col-12">
-                                            <label for="ip">Rate (in Megabits per Second):</label>
-                                            <input type="text" id="limit" name="limit" placeholder="e.g., 50">
-                                            <p><b>...Mbps</b></p>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <ul class="actions">
-                                                <li><button type="submit" class="primary">Submit</button></li>
-                                                <li><button class="button" type="reset">Clear</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
-                            
-                                <script>
-                                    document.getElementById('addRateLimit').addEventListener('submit', function(event) {
-                                        event.preventDefault();
-                                        
-                                        const formData = new FormData(this);
-                                        
-                                        fetch('/add-rate-limit', {
-                                            method: 'POST',
-                                            body: formData
-                                        })
-                                        .then(response => response.text())
-                                        .then(data => {
-                                            alert(data);
-                                        })
-                                        .catch(error => console.error('Error:', error));
-                                    });
-                                </script>
+                            <div class="col-6 col-12-xsmall">
+                                <label for="hits">Hit Count:</label>
+                                <input type="text" id="hits" name="hits" placeholder="e.g., 100">
                             </div>
+
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><button type="submit" class="primary">Submit</button></li>
+                                    <li><button class="button" type="reset">Clear</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                
+                    <script>
+                        document.getElementById('addRequestLimit').addEventListener('submit', function(event) {
+                            event.preventDefault();
                             
-                            <!-- <h3><i>More forms coming soon...</i></h3> -->
-						</section>
-                    
+                            const formData = new FormData(this);
+                            
+                            fetch('/add-request-limit', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text())
+                            .then(data => {
+                                alert(data);
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+                </div>
+
+                <br>
+
+                <div id ="addRateLimitdiv">
+                    <h3><b>Add Request Limit:</b></h3>
+
+                    <form id="addRateLimit">
+                        <div class="row gtr-uniform">
+                            <div class="col-12">
+                                <label for="ip">Rate (in Megabits per Second):</label>
+                                <input type="text" id="limit" name="limit" placeholder="e.g., 50">
+                                <p><b>...Mbps</b></p>
+                            </div>
+
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><button type="submit" class="primary">Submit</button></li>
+                                    <li><button class="button" type="reset">Clear</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                
+                    <script>
+                        document.getElementById('addRateLimit').addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            
+                            const formData = new FormData(this);
+                            
+                            fetch('/add-rate-limit', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.text())
+                            .then(data => {
+                                alert(data);
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    </script>
                 </div>
                 
-                <!-- Footer -->
-                <footer id="footer">
-                    <section>
-                        <h2>About This Project</h2>
-                        <p>My name is Colton Nicholas, and I am a student finishing up my Master's Degree in Cybersecurity at the University of North Texas.
-                            <br><br>This is a solo project from my Advanced Networking course from my Spring 2023 Semester, that I've decided to put continual work into as the months have passed since my time in this course. This is currently a work in progress and a way for me to test and learn Go and HTML.</p>
-                    </section>
-                    <section>
-                        <h2>About Me</h2>
-                        <dl class="alt">
-                            <dt>Address</dt>
-                            <dd>UNT &bull; Denton, TX</dd>
-                            <dt>Email</dt>
-                            <dd><a href="#">JamesNicholas@my.unt.edu</a></dd>
-                        </dl>
-                        <ul class="icons">
-                            <li><a href="https://www.instagram.com/coltonnicholas" class="icon brands fa-instagram alt"><span class="label">Instagram</span></a></li>
-                            <li><a href="https://github.com/colto1000/" class="icon brands fa-github alt"><span class="label">GitHub</span></a></li>
-                        </ul>
-                    </section>
-                    <p class="copyright">&copy; 2024, Colton Nicholas. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-                </footer>
-                
-            </div>
+                <!-- <h3><i>More forms coming soon...</i></h3> -->
+            </section>
+        
+        </div>
             
-            <!-- Scripts -->
-            <script src="../static/js/jquery.min.js"></script>
-            <script src="../static/js/jquery.scrollex.min.js"></script>
-            <script src="../static/js/jquery.scrolly.min.js"></script>
-            <script src="../static/js/browser.min.js"></script>
-            <script src="../static/js/breakpoints.min.js"></script>
-            <script src="../static/js/util.js"></script>
-            <script src="../static/js/main.js"></script>
+        <!-- Footer -->
+        <footer id="footer">
+            <section>
+                <h2>About This Project</h2>
+                <p>My name is Colton Nicholas, and I am a student finishing up my Master's Degree in Cybersecurity at the University of North Texas.
+                    <br><br>This is a solo project from my Advanced Networking course from my Spring 2023 Semester, that I've decided to put continual work into as the months have passed since my time in this course. This is currently a work in progress and a way for me to test and learn Go and HTML.</p>
+            </section>
+            <section>
+                <h2>About Me</h2>
+                <dl class="alt">
+                    <dt>Address</dt>
+                    <dd>UNT &bull; Denton, TX</dd>
+                    <dt>Email</dt>
+                    <dd><a href="#">JamesNicholas@my.unt.edu</a></dd>
+                </dl>
+                <ul class="icons">
+                    <li><a href="https://www.instagram.com/coltonnicholas" class="icon brands fa-instagram alt"><span class="label">Instagram</span></a></li>
+                    <li><a href="https://github.com/colto1000/" class="icon brands fa-github alt"><span class="label">GitHub</span></a></li>
+                </ul>
+            </section>
+            <p class="copyright">&copy; 2024, Colton Nicholas. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+        </footer>
+        
+        <!-- Scripts -->
+        <script src="../static/js/jquery.min.js"></script>
+        <script src="../static/js/jquery.scrollex.min.js"></script>
+        <script src="../static/js/jquery.scrolly.min.js"></script>
+        <script src="../static/js/browser.min.js"></script>
+        <script src="../static/js/breakpoints.min.js"></script>
+        <script src="../static/js/util.js"></script>
+        <script src="../static/js/main.js"></script>
             
 </body>
 </html>
