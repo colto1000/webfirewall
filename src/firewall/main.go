@@ -10,11 +10,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	// "reflect"
-
 	"path/filepath"
 
+	// for rate limiting
 	"github.com/coreos/go-iptables/iptables"
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"
@@ -22,6 +20,17 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"golang.org/x/crypto/bcrypt"
+)
+
+const (
+	tableName = "filter"      // IPTables table name
+	port      = ":8082"       // echo web server port
+	logfile   = "output.log"  // logfile for program output
+	SQLdb     = "webfirewall" // SQL database name
+	SQLusr    = "webadmin"    // SQL username
+	SQLpw     = "password12"  // SQL plaintext password
+	SQLip     = "localhost"   // SQL server IP (e.g. localhost)
+	SQLport   = "3306"        // SQL server port (e.g. 3306)
 )
 
 type TemplateRenderer struct {
@@ -37,8 +46,8 @@ var db *sql.DB
 
 func init() {
 	var err error
-	// Replace with your database source name
-	dsn := "webadmin:password12@tcp(localhost:3306)/webfirewall"
+
+	dsn := SQLusr + ":" + SQLpw + "@tcp(" + SQLip + ":" + SQLport + ")/" + SQLdb // Alternative:  dsn := "webadmin:password12@tcp(localhost:3306)/webfirewall"
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
@@ -52,12 +61,19 @@ func init() {
 
 func main() {
 
+	// Save for later outputting to console
+	consoleOutput := os.Stdout
+
 	// Open a log file
-	logFile, err := os.OpenFile("output.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	logFile, err := os.OpenFile(logfile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
 	defer logFile.Close()
+
+	if _, err := logFile.WriteString("\n\n"); err != nil { // creating some blank space between program runs
+		log.Println(err)
+	}
 
 	// Redirect output to the file
 	log.SetOutput(logFile)
@@ -67,6 +83,12 @@ func main() {
 	// Create a new Echo and IPTables instance
 	e := echo.New()
 	ipt, err := iptables.New()
+
+	// Setup for use in rate limiting, later...
+	// ln, err := net.Listen("tcp", port)
+	// if err != nil {
+	// 	log.Fatalf("Failed to listen: %v", err)
+	// }
 
 	// Handle template (webpage) files
 	templatesPath := filepath.Join("src", "templates", "*.html")
@@ -96,94 +118,21 @@ func main() {
 
 	e.POST("/block-ip", blockIPHandler(ipt))
 	e.POST("/block-port", blockPortHandler(ipt))
-	e.POST("/request-limit", addRequestLimitHandler(ipt))
-	e.POST("/rate-limit", addRateLimitHandler(ipt))
+	e.POST("/add-request-limit", addRequestLimitHandler(ipt))
+	e.POST("/add-rate-limit", addRateLimitHandler(ipt /*, &ln*/))
 	e.GET("/list-rules", listRules(ipt))
-
-	e.GET("/index", indexPage)
-	e.GET("/generic", genericPage)
-	e.GET("/elements", elementsPage)
+	e.GET("/reset-rules", resetRules(ipt))
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8082"))
-
-	// // Create a new IPTables instance
-	// ipt, err := iptables.New()
-	// if err != nil {
-	// 	log.Fatalf("Error creating iptables instance: %v", err)
-	// }
-
-	// // Example: List rules in the filter table and INPUT chain
-	// rules, err := ipt.List("filter", "INPUT")
-	// if err != nil {
-	// 	log.Fatalf("Error listing iptables rules: %v", err)
-	// }
-
-	// // Print the rules
-	// for _, rule := range rules {
-	// 	fmt.Println(rule)
-	// }
+	fmt.Fprintf(consoleOutput, "Server starting on localhost%v...\nRemaining output logged to %v\n", port, logfile)
+	e.Logger.Fatal(e.Start(port))
+	//fmt.Fprintf(consoleOutput, "Server started on localhost:", port, "\n")  // can't get this to print, maybe echo takes over console output?
 
 	validate = validator.New()
 
 }
 
 /* -- IPTABLES FUNCTIONS -- */
-
-const tableName = "filter"
-
-// func contains(list []string, value string) bool {
-// 	for _, val := range list {
-// 		if val == value {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
-
-// func createInputToPortFilter(ipt *iptables.IPTables) {
-// 	chain := "INPUT"
-// 	list, err := ipt.ListChains(tableName)
-// 	log.Printf("chain list:%v", list)
-// 	if err != nil {
-// 		log.Printf("ListChains of Initial failed: %v", err)
-// 	}
-// 	isExists, err := ipt.Exists(tableName, chain, "-j", "port_jump")
-// 	if !isExists {
-// 		err = ipt.Append(tableName, chain, "-j", "port_jump")
-// 		if err != nil {
-// 			log.Printf("Append Input To Port Jump: %v\n", err)
-// 		}
-// 	}
-
-// }
-// func createMacBasedProtFilter(ipt *iptables.IPTables, port uint32) {
-// 	chain := ProtFilterChainName
-// 	err := ipt.ClearChain(tableName, chain)
-// 	if err != nil {
-// 		log.Printf("ClearChain (of non-empty) failed: %v\n", err)
-// 	}
-// 	err = ipt.Insert(tableName, chain, 1, "-p", "tcp", "--dport", fmt.Sprintf("%d", port), "-j", MacFilterChainName)
-// 	err = ipt.Insert(tableName, chain, 1, "-p", "udp", "--dport", fmt.Sprintf("%d", port), "-j", MacFilterChainName)
-// }
-
-// func createMacFilter(ipt *iptables.IPTables) {
-// 	chain := MacFilterChainName
-// 	err := ipt.ClearChain(tableName, chain)
-// 	if err != nil {
-// 		log.Printf("ClearChain (of non-empty) failed: %v", err)
-// 	}
-// 	// put a simple rule in
-// 	err = ipt.Insert(tableName, chain, 1, "-m", "mac", "--mac-source", "00:0F:EA:91:04:08", "-j", "ACCEPT")
-// 	if err != nil {
-// 		log.Printf("Append failed: %v", err)
-// 	}
-// 	err = ipt.Append(tableName, chain, "-j", "DROP")
-// 	if err != nil {
-// 		log.Printf("Append failed: %v", err)
-// 	}
-
-// }
 
 type IPTablesRules struct {
 	Chain string   `json:"chain"`
@@ -193,14 +142,38 @@ type IPTablesRules struct {
 func listRules(ipt *iptables.IPTables) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		// rules, err := ipt.List(tableName, "INPUT")
-		// if err != nil {
-		// 	return err
-		// }
-
-		// return c.JSON(http.StatusOK, rules)
-
 		// List all chains in the filter table
+		chains, err := ipt.ListChains("filter")
+		if err != nil {
+			return err
+		}
+
+		var allRules []IPTablesRules
+
+		// Iterate over each chain and list rules
+		for _, chain := range chains {
+			rules, err := ipt.List("filter", chain)
+			if err != nil {
+				return err
+			}
+
+			allRules = append(allRules, IPTablesRules{
+				Chain: chain,
+				Rules: rules,
+			})
+		}
+
+		return c.JSON(http.StatusOK, allRules)
+	}
+}
+
+func resetRules(ipt *iptables.IPTables) echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		ipt.ClearAll() // Clear all rules
+
+		// ... then, continue with listing all rules
+
 		chains, err := ipt.ListChains("filter")
 		if err != nil {
 			return err
@@ -241,13 +214,13 @@ func blockPort(ipt *iptables.IPTables, port string, protocol string, srcdst stri
 	}
 }
 
-func addRequestLimit(ipt *iptables.IPTables, ip string) error {
-	return ipt.AppendUnique(tableName, "INPUT", "-s", ip, "-m", "state", "--state", "NEW", "-m", "recent", "--update", "--seconds", "60", "--hitcount", "100", "-j", "DROP")
+func addRequestLimit(ipt *iptables.IPTables, ip string, sec string, hits string) error {
+	return ipt.AppendUnique(tableName, "INPUT", "-s", ip, "-m", "state", "--state", "NEW", "-m", "recent", "--update", "--seconds", sec, "--hitcount", hits, "-j", "DROP")
 }
 
-func addRateLimit(ipt *iptables.IPTables, ip string, rate string) error {
-	return ipt.Append(tableName, "INPUT", "-s", ip, "-m", "limit", "--limit", rate, "-j", "ACCEPT")
-}
+// func addRateLimit(ipt *iptables.IPTables, ip string, rate string) error {
+// 	return ipt.Append(tableName, "INPUT", "-s", ip, "-m", "limit", "--limit", rate, "-j", "ACCEPT")
+// }
 
 func blockIPHandler(ipt *iptables.IPTables) echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -281,70 +254,48 @@ func blockPortHandler(ipt *iptables.IPTables) echo.HandlerFunc {
 func addRequestLimitHandler(ipt *iptables.IPTables) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ip := c.FormValue("ip")
+		sec := c.FormValue("sec")
+		hits := c.FormValue("hits")
 
 		ipt.AppendUnique(tableName, "INPUT", "-m", "state", "--state", "NEW", "-m", "recent", "--set")
 
-		err := addRequestLimit(ipt, ip)
+		err := addRequestLimit(ipt, ip, sec, hits)
 		if err != nil {
+
 			return c.String(http.StatusInternalServerError, "Failed to create request limit")
 		}
 
-		return c.String(http.StatusOK, "Request limit added successfully")
+		return c.String(http.StatusNotImplemented, "Request limit added successfully")
 	}
 
 }
 
-func addRateLimitHandler(ipt *iptables.IPTables) echo.HandlerFunc {
+func addRateLimitHandler(ipt *iptables.IPTables /*, ln *net.Listener*/) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ip := c.FormValue("ip")
-		rate := c.FormValue("rate")
+		// limit, err := strconv.ParseInt(c.FormValue("limit")[0:], 10, 64)
+		// if err != nil {
+		// 	return c.String(http.StatusInternalServerError, "Invalid rate limit, try again with an integer.")
+		// }
 
-		err := addRateLimit(ipt, ip, rate)
-		if err != nil {
-			return c.String(http.StatusInternalServerError, "Failed to create rate limit")
-		}
+		// lim := bwlimit.Byte(limit) * bwlimit.Mebibyte
 
-		return c.String(http.StatusOK, "Rate limit added successfully")
+		// *ln = bwlimit.NewListener(*ln, lim, lim)
+
+		// err := addRateLimit(ipt, ip, rate)
+		// if err != nil {
+		// 	return c.String(http.StatusInternalServerError, "Failed to create rate limit")
+		// }
+
+		limit := c.FormValue("limit")
+
+		return c.String(http.StatusOK, "Rate limit is a work in progress. Rule was not added. (Value: "+limit+")")
 	}
 
 }
 
 /* -- WEBPAGE RELATED FUNCTIONS -- */
 
-func elementsPage(c echo.Context) error {
-	err := c.Render(http.StatusOK, "elements.html", nil)
-	if err != nil {
-		log.Println("Error rendering index page:", err)
-		return c.String(http.StatusInternalServerError, "Internal Server Error")
-	}
-	return nil
-}
-
-func genericPage(c echo.Context) error {
-	err := c.Render(http.StatusOK, "generic.html", nil)
-	if err != nil {
-		log.Println("Error rendering index page:", err)
-		return c.String(http.StatusInternalServerError, "Internal Server Error")
-	}
-	return nil
-}
-
-func indexPage(c echo.Context) error {
-	err := c.Render(http.StatusOK, "index.html", nil)
-	if err != nil {
-		log.Println("Error rendering index page:", err)
-		return c.String(http.StatusInternalServerError, "Internal Server Error")
-	}
-	return nil
-}
-
 func homePage(c echo.Context) error {
-	// return c.File("home.html")
-	// print a message to the console indicating pwd
-	// fmt.Println("pwd: ", os.Getenv("PWD"))
-
-	// return c.Render(http.StatusOK, "home.html", nil)
-
 	err := c.Render(http.StatusOK, "home.html", nil)
 	if err != nil {
 		log.Println("Error rendering home page:", err)
@@ -354,9 +305,6 @@ func homePage(c echo.Context) error {
 }
 
 func loginPage(c echo.Context) error {
-	// Render login template
-	// return c.File("login.html")
-
 	err := c.Render(http.StatusOK, "login.html", nil)
 	if err != nil {
 		log.Println("Error rendering login page:", err)
@@ -366,8 +314,6 @@ func loginPage(c echo.Context) error {
 }
 
 func registerPage(c echo.Context) error {
-	// return c.File("register.html")
-
 	err := c.Render(http.StatusOK, "register.html", nil)
 	if err != nil {
 		log.Println("Error rendering register page:", err)
@@ -377,13 +323,6 @@ func registerPage(c echo.Context) error {
 }
 
 func dashboardPage(c echo.Context) error {
-	// return c.File("dashboard.html")
-
-	// if !isAuthenticated(c) {
-	//     // Render the access denied page
-	//     return c.Render(http.StatusForbidden, "denied.html", nil)
-	// }
-
 	err := c.Render(http.StatusOK, "dashboard.html", nil)
 	if err != nil {
 		log.Println("Error rendering dashboard page:", err)
