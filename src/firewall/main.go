@@ -136,8 +136,8 @@ func main() {
 	e.GET("/list-rules", listRules(ipt))
 	e.GET("/reset-rules", resetRules(ipt))
 
-	e.GET("/dashboard/logs", logsPage)
-	e.GET("/dashboard/monitor", monitorPage)
+	e.GET("/dashboard/logs", logsPage, isAuthenticated)
+	e.GET("/dashboard/monitor", monitorPage, isAuthenticated)
 
 	// Start server
 	fmt.Fprintf(consoleOutput, "Server starting on localhost%v...\nRemaining output logged to %v\n", port, logfile)
