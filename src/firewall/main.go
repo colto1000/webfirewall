@@ -136,6 +136,9 @@ func main() {
 	e.GET("/list-rules", listRules(ipt))
 	e.GET("/reset-rules", resetRules(ipt))
 
+	e.GET("/dashboard/logs", logsPage)
+	e.GET("/dashboard/monitor", monitorPage)
+
 	// Start server
 	fmt.Fprintf(consoleOutput, "Server starting on localhost%v...\nRemaining output logged to %v\n", port, logfile)
 	e.Logger.Fatal(e.Start(port))
@@ -364,6 +367,24 @@ func registerPage(c echo.Context) error {
 
 func dashboardPage(c echo.Context) error {
 	err := c.Render(http.StatusOK, "dashboard.html", nil)
+	if err != nil {
+		log.Println("Error rendering dashboard page:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return nil
+}
+
+func logsPage(c echo.Context) error {
+	err := c.Render(http.StatusOK, "logs.html", nil)
+	if err != nil {
+		log.Println("Error rendering dashboard page:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return nil
+}
+
+func monitorPage(c echo.Context) error {
+	err := c.Render(http.StatusOK, "monitor.html", nil)
 	if err != nil {
 		log.Println("Error rendering dashboard page:", err)
 		return c.String(http.StatusInternalServerError, "Internal Server Error")
