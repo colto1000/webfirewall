@@ -91,12 +91,12 @@
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <label for="ip">IP Address:</label>
-                                <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
+                                <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1" required>
                             </div>
 
                             <div class="col-6 col-12-xsmall">
                                 <label for="protocol">Protocol:</label>
-                                <select name="protocol" id="protocol">
+                                <select name="protocol" id="protocol" required>
                                     <option value="">- Select a Protocol -</option>
                                     <option value="tcp">TCP</option>
                                     <option value="udp">UDP</option>
@@ -106,7 +106,7 @@
 
                             <div class="col-6 col-12-xsmall">
                                 <label for="srcdst">Source/Destination:</label>
-                                <select name="srcdst" id="srcdst">
+                                <select name="srcdst" id="srcdst" required>
                                     <option value="">- Select Source or Destination -</option>
                                     <option value="source">Source</option>
                                     <option value="destination">Destination</option>
@@ -151,12 +151,12 @@
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <label for="port">Port:</label>
-                                <input type="text" id="port" name="port" placeholder="e.g., 80">
+                                <input type="text" id="port" name="port" placeholder="e.g., 80" required>
                             </div>
 
                             <div class="col-6 col-12-xsmall">
                                 <label for="protocol">Protocol:</label>
-                                <select name="protocol" id="protocol">
+                                <select name="protocol" id="protocol" required>
                                     <option value="">- Select a Protocol -</option>
                                     <option value="tcp">TCP</option>
                                     <option value="udp">UDP</option>
@@ -166,7 +166,7 @@
 
                             <div class="col-6 col-12-xsmall">
                                 <label for="srcdst">Source/Destination:</label>
-                                <select name="srcdst" id="srcdst">
+                                <select name="srcdst" id="srcdst" required>
                                     <option value="">- Select Source or Destination -</option>
                                     <option value="source">Source</option>
                                     <option value="destination">Destination</option>
@@ -273,17 +273,17 @@
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <label for="ip">Source IP:</label>
-                                <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1">
+                                <input type="text" id="ip" name="ip" placeholder="e.g., 192.168.1.1" required>
                             </div>
 
                             <div class="col-6 col-12-xsmall">
                                 <label for="sec">Seconds:</label>
-                                <input type="text" id="sec" name="sec" placeholder="e.g., 60">
+                                <input type="text" id="sec" name="sec" placeholder="e.g., 60" required>
                             </div>
 
                             <div class="col-6 col-12-xsmall">
                                 <label for="hits">Hit Count:</label>
-                                <input type="text" id="hits" name="hits" placeholder="e.g., 100">
+                                <input type="text" id="hits" name="hits" placeholder="e.g., 100" required>
                             </div>
 
                             <div class="col-12">
@@ -317,13 +317,13 @@
                 <br>
 
                 <div id ="addRateLimitdiv">
-                    <h3><b>Add Request Limit:</b></h3>
+                    <h3><b>Add Rate Limit:</b></h3>
 
                     <form id="addRateLimit">
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <label for="ip">Rate (in Megabits per Second):</label>
-                                <input type="text" id="limit" name="limit" placeholder="e.g., 50">
+                                <input type="text" id="limit" name="limit" placeholder="e.g., 50" required>
                                 <p><b>...Mbps</b></p>
                             </div>
 
