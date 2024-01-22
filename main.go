@@ -15,7 +15,7 @@ import (
 func main() {
 	// read in cmd line args
 	dbUsername := flag.String("db-username", "webadmin", "SQL username")
-	dbPassword := flag.String("db-password", os.Getenv("DB_PASSWORD"), "SQL password")
+	dbPassword := flag.String("db-password", "password12" /* os.Getenv("DB_PASSWORD") */, "SQL password")
 	dbIP := flag.String("db-ip", "localhost", "SQL server IP")
 	dbPort := flag.String("db-port", "3306", "SQL server port")
 	dbName := flag.String("db-name", "webfirewall", "SQL database name")
