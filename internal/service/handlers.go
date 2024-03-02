@@ -42,6 +42,7 @@ func NewWebServer(mw ...echo.MiddlewareFunc) *echo.Echo {
 	e.Renderer = &Template{
 		templates: template.Must(template.ParseFS(templates, "templates/*.html")),
 	}
+
 	// add middleware
 	for _, fn := range mw {
 		e.Use(fn)
@@ -78,6 +79,8 @@ func (svc *Service) AddRoutes() {
 		{Method: echo.POST, Path: "/login", HandlerFunc: svc.login},
 		{Method: echo.GET, Path: "/logout", HandlerFunc: logout},
 		{Method: echo.GET, Path: "/dashboard", HandlerFunc: dashboardPage, MW: []echo.MiddlewareFunc{isAuthenticated}},
+		{Method: echo.GET, Path: "/dashboard/logs", HandlerFunc: logsPage, MW: []echo.MiddlewareFunc{isAuthenticated}},
+		{Method: echo.GET, Path: "/dashboard/monitor", HandlerFunc: monitorPage, MW: []echo.MiddlewareFunc{isAuthenticated}},
 		{Method: echo.GET, Path: "/register", HandlerFunc: registerPage},
 		{Method: echo.POST, Path: "/register", HandlerFunc: svc.handleRegistration},
 		{Method: echo.POST, Path: "/block-ip", HandlerFunc: svc.blockIPHandler()},
@@ -87,8 +90,6 @@ func (svc *Service) AddRoutes() {
 		{Method: echo.POST, Path: "/add-rate-limit", HandlerFunc: svc.addRateLimitHandler( /*, &ln*/ )},
 		{Method: echo.GET, Path: "/list-rules", HandlerFunc: svc.listRules()},
 		{Method: echo.GET, Path: "/reset-rules", HandlerFunc: svc.resetRules()},
-		{Method: echo.GET, Path: "/dashboard/logs", HandlerFunc: logsPage, MW: []echo.MiddlewareFunc{isAuthenticated}},
-		{Method: echo.GET, Path: "/dashboard/monitor", HandlerFunc: monitorPage, MW: []echo.MiddlewareFunc{isAuthenticated}},
 	} {
 		svc.Echo.Add(r.Method, r.Path, r.HandlerFunc, r.MW...)
 	}
@@ -178,7 +179,7 @@ func (svc *Service) login(c echo.Context) error {
 	password := c.FormValue("password")
 
 	// Validate credentials
-	user, err := svc.getUserByUsername(username) // Implement this function to retrieve user data
+	user, err := svc.getUserByUsername(username)
 	if err != nil || !CheckPasswordHash(password, user.Password) {
 		// Render the login page again with an error message
 		return c.Render(http.StatusOK, "login.html", map[string]interface{}{
@@ -262,7 +263,7 @@ func (svc *Service) handleRegistration(c echo.Context) error {
 		return err // or return a more user-friendly error message
 	}
 
-	// Redirect to login page or return success message
+	// Redirect to login page
 	return c.Redirect(http.StatusSeeOther, "/login")
 }
 
@@ -276,8 +277,7 @@ func (svc *Service) saveUser(user User) error {
 }
 
 func (svc *Service) getUserByUsername(username string) (user *User, err error) {
-	if err := svc.DB.QueryRow("SELECT username, password FROM users WHERE username = ?", username).
-		Scan(&user.Username, &user.Password); errors.Is(err, sql.ErrNoRows) {
+	if err := svc.DB.QueryRow("SELECT username, password FROM users WHERE username = ?", username).Scan(&user.Username, &user.Password); errors.Is(err, sql.ErrNoRows) {
 		return nil, fmt.Errorf("user not found")
 	} else if err != nil {
 		return nil, err
