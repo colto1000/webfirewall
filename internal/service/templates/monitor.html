@@ -5,9 +5,9 @@
     <title>webfirewall - Home</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="../static/css/main.css" />
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <noscript><link rel="stylesheet" href="../static/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
 </head>
 
 <body class="is-preload">
@@ -17,7 +17,7 @@
         
         <!-- Header -->
         <header id="header" class="alt">
-            <h1>System Monitor</h1>
+            <h1>System Monitor Dashboard</h1>
         </header>
         
         <!-- Nav -->
@@ -34,8 +34,77 @@
         
         <!-- Main -->
         <div id="main">
+            <section id="clusters" class="main">
+
+                <h3><b>Host System Usage Information</b></h3>
                 
-            <p>Hey</p>
+                <div id="stats">
+                    <ul class="alt">
+                        <li id="cpu-stats"><strong>CPU Usage:</strong> Loading...</li>
+                        <li id="memory-stats"><strong>Memory:</strong> Loading...</li>
+                        <li id="network-stats"><strong>Network:</strong> Loading...</li>
+                    </ul>
+                </div>
+
+                <script>
+                    function fetchStats() {
+                        fetch('/api/stats')
+                            .then(response => response.json())
+                            .then(data => {
+                                displayCPUStats(data.cpu);
+                                displayMemoryStats(data.memory);
+                                displayNetworkStats(data.network);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching stats:', error);
+                                displayError();
+                            });
+                    }
+                    
+                    function displayCPUStats(cpuStats) {
+                        const cpuElement = document.getElementById('cpu-stats');
+                        cpuElement.innerHTML = `<strong>CPU Usage:</strong> ${cpuStats[0].toFixed(2)}%`;
+                    }
+                    
+                    function displayMemoryStats(memoryStats) {
+                        const memoryElement = document.getElementById('memory-stats');
+                        const totalMemory = (memoryStats.total / (1024 ** 3)).toFixed(2); // Convert to GB and limit to 2 decimal places
+                        const usedMemory = (memoryStats.used / (1024 ** 3)).toFixed(2); // Convert to GB and limit to 2 decimal places
+                        memoryElement.innerHTML = `<strong>Memory:</strong> Total: ${totalMemory} GB, Used: ${usedMemory} GB`;
+                    }
+                    
+                    function displayNetworkStats(networkStats) {
+                        // const networkElement = document.getElementById('network-stats');
+                        // networkElement.innerHTML = '<strong>Network:</strong> ';
+                        // networkStats.forEach(stat => {
+                        //     const bytesSentPerSecond = stat.bytesSent;
+                        //     const bytesRecvPerSecond = stat.bytesRecv;
+                        //     const sentMbps = (bytesSentPerSecond * 8 / 1e6).toFixed(2);
+                        //     const recvMbps = (bytesRecvPerSecond * 8 / 1e6).toFixed(2);
+                        //     networkElement.innerHTML += `Interface ${stat.name}: Sent ${sentMbps} Mbps, Received ${recvMbps} Mbps<br>`;
+                        // });
+
+                        const networkElement = document.getElementById('network-stats');
+                        networkElement.innerHTML = '<strong>Network:</strong><div style="padding-left: 20px;">';
+
+                        networkStats.forEach(stat => {
+                            networkElement.innerHTML += `<div>Interface ${stat.interface}: Sent ${stat.sentMbps.toFixed(2)} Mbps, Received ${stat.recvMbps.toFixed(2)} Mbps</div>`;
+                        });
+
+                        networkElement.innerHTML += '</div>';
+                    }
+
+                    function displayError() {
+                        document.getElementById('cpu-stats').innerHTML = '<strong>CPU Usage:</strong> Error loading data';
+                        document.getElementById('memory-stats').innerHTML = '<strong>Memory:</strong> Error loading data';
+                        document.getElementById('network-stats').innerHTML = '<strong>Network:</strong> Error loading data';
+                    }
+                    
+                    document.addEventListener('DOMContentLoaded', function () {
+                        fetchStats();
+                        setInterval(fetchStats, 2000); // Updates every 2 seconds
+                    });
+                </script>
         
         </div>
             
@@ -63,13 +132,13 @@
         </footer>
         
         <!-- Scripts -->
-        <script src="../static/js/jquery.min.js"></script>
-        <script src="../static/js/jquery.scrollex.min.js"></script>
-        <script src="../static/js/jquery.scrolly.min.js"></script>
-        <script src="../static/js/browser.min.js"></script>
-        <script src="../static/js/breakpoints.min.js"></script>
-        <script src="../static/js/util.js"></script>
-        <script src="../static/js/main.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/jquery.scrollex.min.js"></script>
+        <script src="/static/js/jquery.scrolly.min.js"></script>
+        <script src="/static/js/browser.min.js"></script>
+        <script src="/static/js/breakpoints.min.js"></script>
+        <script src="/static/js/util.js"></script>
+        <script src="/static/js/main.js"></script>
             
 </body>
 </html>

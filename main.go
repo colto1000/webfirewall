@@ -24,7 +24,13 @@ func main() {
 	flag.Parse()
 
 	// Setup logger
-	logout := os.Stdout
+	logout, err := os.OpenFile("output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("error opening log file: %v", err)
+		return
+	}
+	defer logout.Close()
+	// logout := os.Stdout
 	logger := slog.New(slog.NewTextHandler(logout, &slog.HandlerOptions{}))
 
 	// create web server
@@ -53,4 +59,5 @@ func main() {
 	if err := svc.Start(fmt.Sprintf(":%d", *httpPort)); err != nil {
 		svc.Error("failed to start server", slog.String("err", err.Error()))
 	}
+
 }

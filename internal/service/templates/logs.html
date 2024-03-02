@@ -5,9 +5,9 @@
     <title>webfirewall - Home</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="../static/css/main.css" />
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <noscript><link rel="stylesheet" href="../static/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
 </head>
 
 <body class="is-preload">
@@ -34,8 +34,37 @@
         
         <!-- Main -->
         <div id="main">
-                
-            <p>Hey</p>
+
+            <section id="content" class="main">
+                <h2>output.log</h2>
+                <hr />
+                <p id="logContent">Loading...</p>
+            </section>
+
+            <script>
+                function fetchAndDisplayLogs() {
+                    fetch('/api/logs')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to fetch logs: status ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            document.getElementById('logContent').textContent = data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching logs:', error);
+                            document.getElementById('logContent').textContent = 'Error loading logs';
+                        });
+                }
+            
+                document.addEventListener('DOMContentLoaded', function() {
+                    fetchAndDisplayLogs();
+                    setInterval(fetchAndDisplayLogs, 2000); // Refresh every 2 seconds
+                });
+            </script>
+            
         
         </div>
             
@@ -63,13 +92,13 @@
         </footer>
         
         <!-- Scripts -->
-        <script src="../static/js/jquery.min.js"></script>
-        <script src="../static/js/jquery.scrollex.min.js"></script>
-        <script src="../static/js/jquery.scrolly.min.js"></script>
-        <script src="../static/js/browser.min.js"></script>
-        <script src="../static/js/breakpoints.min.js"></script>
-        <script src="../static/js/util.js"></script>
-        <script src="../static/js/main.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/jquery.scrollex.min.js"></script>
+        <script src="/static/js/jquery.scrolly.min.js"></script>
+        <script src="/static/js/browser.min.js"></script>
+        <script src="/static/js/breakpoints.min.js"></script>
+        <script src="/static/js/util.js"></script>
+        <script src="/static/js/main.js"></script>
             
 </body>
 </html>

@@ -19,6 +19,7 @@ func NewDatabaseConn(username, password, url, port, database string) (*sql.DB, e
 }
 
 func WithDatabaseConn(username, password, url, port, database string) Option {
+	// log.Println("\n\n ***", username, password, url, port, database)
 	return func(s *Service) error {
 		db, err := NewDatabaseConn(username, password, url, port, database)
 		if err != nil {

@@ -9,9 +9,9 @@ _WORK IN PROGRESS_
 A IPTables-based firewall with a web application admin frontend, written mostly in Go and HTML.
 
 ## Usage
-From the root directory of this project, run the command: `go build -o firewall main.go`
+**From the root directory of this project, run the command: `go build -o firewall main.go`**
 
-...Then, run with: `sudo ./firewall`
+**...Then, run with: `sudo ./firewall`**
 
 _Or if using the precompiled binary _(experimental)_, then: `chmod +x webfirewall_linux_amd64` and `sudo ./webfirewall_linux_amd64`_
 

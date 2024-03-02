@@ -12,9 +12,14 @@ import (
 	"log"
 	"log/slog"
 	"net/http"
+	"os"
+	"time"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/mem"
+	"github.com/shirou/gopsutil/net"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -23,8 +28,8 @@ var (
 	templates embed.FS
 	//go:embed static/*
 	static embed.FS
-	//go:embed static/images/*
-	images embed.FS
+	// //go:embed static/images/*
+	// images embed.FS
 )
 
 type Template struct {
@@ -37,8 +42,8 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 func NewWebServer(mw ...echo.MiddlewareFunc) *echo.Echo {
 	e := echo.New()
-	e.StaticFS("/static", static)
-	e.StaticFS("/images", images)
+	e.StaticFS("/", static)
+	// e.StaticFS("/images", images)
 	e.Renderer = &Template{
 		templates: template.Must(template.ParseFS(templates, "templates/*.html")),
 	}
@@ -90,9 +95,21 @@ func (svc *Service) AddRoutes() {
 		{Method: echo.POST, Path: "/add-rate-limit", HandlerFunc: svc.addRateLimitHandler( /*, &ln*/ )},
 		{Method: echo.GET, Path: "/list-rules", HandlerFunc: svc.listRules()},
 		{Method: echo.GET, Path: "/reset-rules", HandlerFunc: svc.resetRules()},
+		{Method: echo.GET, Path: "/api/stats", HandlerFunc: svc.systemStatsHandler, MW: []echo.MiddlewareFunc{isAuthenticated}},
+		{Method: echo.GET, Path: "/api/logs", HandlerFunc: svc.logsHandler, MW: []echo.MiddlewareFunc{isAuthenticated}},
+		// {Method: echo.GET, Path: "/elements", HandlerFunc: elementPage},
 	} {
 		svc.Echo.Add(r.Method, r.Path, r.HandlerFunc, r.MW...)
 	}
+}
+
+func elementPage(c echo.Context) error {
+	err := c.Render(http.StatusOK, "elements.html", nil)
+	if err != nil {
+		log.Println("Error rendering element page:", err)
+		return c.String(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return nil
 }
 
 func homePage(c echo.Context) error {
@@ -149,6 +166,104 @@ func monitorPage(c echo.Context) error {
 	return nil
 }
 
+/* -- SYSTEM RESOURCES -- */
+
+type NetworkStat struct {
+	Interface string  `json:"interface"`
+	SentMbps  float64 `json:"sentMbps"`
+	RecvMbps  float64 `json:"recvMbps"`
+}
+
+type SystemStats struct {
+	CPU     []float64              `json:"cpu"`
+	Memory  *mem.VirtualMemoryStat `json:"memory"`
+	Network []NetworkStat          `json:"network"`
+}
+
+func (svc *Service) getSystemStats() (*SystemStats, error) {
+	stats := &SystemStats{}
+
+	// Fetch CPU stats
+	cpuStats, err := cpu.Percent(1*time.Second, false)
+	if err != nil {
+		return nil, err
+	}
+	stats.CPU = cpuStats
+
+	// Fetch memory stats
+	memoryStats, err := mem.VirtualMemory()
+	if err != nil {
+		return nil, err
+	}
+	stats.Memory = memoryStats
+
+	// Fetch network stats
+	networkStats, err := calcNetworkStats()
+	if err != nil {
+		return nil, err
+	}
+	stats.Network = networkStats
+
+	return stats, nil
+}
+
+var previousStats []net.IOCountersStat
+var lastUpdateTime time.Time
+
+func calcNetworkStats() ([]NetworkStat, error) {
+	currentStats, err := net.IOCounters(true)
+	if err != nil {
+		return nil, err
+	}
+
+	currentTime := time.Now()
+	elapsed := currentTime.Sub(lastUpdateTime).Seconds()
+	if elapsed == 0 {
+		return nil, nil
+	}
+
+	networkData := make([]NetworkStat, 0)
+	minLen := min(len(currentStats), len(previousStats))
+
+	for i := 0; i < minLen; i++ {
+		sentRate := float64(currentStats[i].BytesSent-previousStats[i].BytesSent) * 8 / (elapsed * 1e6) // Convert to Mbps
+		recvRate := float64(currentStats[i].BytesRecv-previousStats[i].BytesRecv) * 8 / (elapsed * 1e6) // Convert to Mbps
+		networkData = append(networkData, NetworkStat{
+			Interface: currentStats[i].Name,
+			SentMbps:  sentRate,
+			RecvMbps:  recvRate,
+		})
+	}
+
+	previousStats = currentStats
+	lastUpdateTime = currentTime
+	return networkData, nil
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func (svc *Service) systemStatsHandler(c echo.Context) error {
+	stats, err := svc.getSystemStats()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, stats)
+}
+
+func (svc *Service) logsHandler(c echo.Context) error {
+	content, err := os.ReadFile("output.log")
+	if err != nil {
+		fmt.Printf("Failed to read log file: %v", err)
+		return c.String(http.StatusInternalServerError, "Unable to read log file")
+	}
+	return c.String(http.StatusOK, string(content))
+}
+
 /* -- AUTHENTICATION / LOGIN / HASHING MANAGEMENT RELATED FUNCTIONS -- */
 
 var (
@@ -178,6 +293,8 @@ func (svc *Service) login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
 
+	// log.Printf("\n *** User: %v // Pass: %v\n", username, password)
+
 	// Validate credentials
 	user, err := svc.getUserByUsername(username)
 	if err != nil || !CheckPasswordHash(password, user.Password) {
@@ -187,7 +304,7 @@ func (svc *Service) login(c echo.Context) error {
 		})
 	}
 
-	// Validate credentials (this is a simplified example)
+	// Validate credentials
 	if CheckPasswordHash(password, user.Password) {
 		// Set user session
 		session, _ := store.Get(c.Request(), "session")
@@ -277,6 +394,7 @@ func (svc *Service) saveUser(user User) error {
 }
 
 func (svc *Service) getUserByUsername(username string) (user *User, err error) {
+	user = &User{}
 	if err := svc.DB.QueryRow("SELECT username, password FROM users WHERE username = ?", username).Scan(&user.Username, &user.Password); errors.Is(err, sql.ErrNoRows) {
 		return nil, fmt.Errorf("user not found")
 	} else if err != nil {
