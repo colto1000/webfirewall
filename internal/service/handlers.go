@@ -103,14 +103,14 @@ func (svc *Service) AddRoutes() {
 	}
 }
 
-func elementPage(c echo.Context) error {
-	err := c.Render(http.StatusOK, "elements.html", nil)
-	if err != nil {
-		log.Println("Error rendering element page:", err)
-		return c.String(http.StatusInternalServerError, "Internal Server Error")
-	}
-	return nil
-}
+// func elementPage(c echo.Context) error {
+// 	err := c.Render(http.StatusOK, "elements.html", nil)
+// 	if err != nil {
+// 		log.Println("Error rendering element page:", err)
+// 		return c.String(http.StatusInternalServerError, "Internal Server Error")
+// 	}
+// 	return nil
+// }
 
 func homePage(c echo.Context) error {
 	err := c.Render(http.StatusOK, "home.html", nil)
