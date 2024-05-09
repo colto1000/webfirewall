@@ -15,7 +15,7 @@ A IPTables-based firewall with a web application admin frontend, written mostly 
 
 ## _Notes_
 
-- _You may try using the precompiled binary _(experimental)_, then: `chmod +x webfirewall_linux_amd64` and `sudo ./webfirewall_linux_amd64`_
+- _You may try using the precompiled binary _(experimental)_: `chmod +x webfirewall_linux_amd64` and `sudo ./webfirewall_linux_amd64`_
 - This project relies on Legacy IPTables modules, so you must first switch to Legacy IPTables if you're not already running it.
   - Run: `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy`
 - Some IPTables functionality (like Request Limiting) may or may not work based on what operating system you are running.
