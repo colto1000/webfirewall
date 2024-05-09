@@ -13,7 +13,7 @@ A IPTables-based firewall with a web application admin frontend, written mostly 
 
 **...Then, run with: `sudo ./firewall`**
 
-**Connect to the service at http://localhost:8082**
+**Connect to the service at `http://localhost:8082`**
 
 ## _Notes_
 
