@@ -13,6 +13,8 @@ A IPTables-based firewall with a web application admin frontend, written mostly 
 
 **...Then, run with: `sudo ./firewall`**
 
+**Connect to the service at http://localhost:8082**
+
 ## _Notes_
 
 - _You may try using the precompiled binary _(experimental)_: `chmod +x webfirewall_linux_amd64` and `sudo ./webfirewall_linux_amd64`_
